@@ -1,6 +1,7 @@
 # Custom
 build*
 *.TMP
+.cache
 
 # Prerequisites
 *.d

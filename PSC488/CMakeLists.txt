@@ -13,12 +13,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
-set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-)
+# set(PROJECT_SOURCES
+#         main.cpp
+#         mainwindow.cpp
+#         mainwindow.h
+#         mainwindow.ui
+# )
+
+file(GLOB_RECURSE PROJECT_SOURCES
+    ${CMAKE_SOURCE_DIR}/src/*)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(PSC488

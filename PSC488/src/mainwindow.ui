@@ -55,8 +55,8 @@
      <rect>
       <x>30</x>
       <y>30</y>
-      <width>171</width>
-      <height>31</height>
+      <width>30</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="font">
@@ -73,10 +73,13 @@
      <string notr="true">color: rgb(30,30,30);</string>
     </property>
     <property name="text">
-     <string>  A</string>
+     <string>A</string>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -87,8 +90,8 @@
      <rect>
       <x>230</x>
       <y>30</y>
-      <width>171</width>
-      <height>31</height>
+      <width>30</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="font">
@@ -105,10 +108,13 @@
      <string notr="true">color: rgb(30,30,30);</string>
     </property>
     <property name="text">
-     <string>  V</string>
+     <string>V</string>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLCDNumber" name="monitorVolts">

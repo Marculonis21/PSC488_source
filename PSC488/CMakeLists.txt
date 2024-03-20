@@ -12,6 +12,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt6PrintSupport)
 
 # set(PROJECT_SOURCES
 #         main.cpp
@@ -21,12 +22,15 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 # )
 
 file(GLOB_RECURSE PROJECT_SOURCES
-    ${CMAKE_SOURCE_DIR}/src/*)
+    ${CMAKE_SOURCE_DIR}/*.cpp
+    ${CMAKE_SOURCE_DIR}/*.hpp)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(PSC488
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        mainwindow.ui
+        qcustomplot.hpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET PSC488 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -46,7 +50,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(PSC488 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(PSC488 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt6::PrintSupport)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

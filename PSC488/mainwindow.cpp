@@ -1,5 +1,6 @@
 #include "mainwindow.hpp"
-#include "./ui_mainwindow.h"
+#include "ui_mainwindow.h"
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -8,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->monitorAmps->display(173.20);
     ui->monitorVolts->display(178.11);
+    std::cout << "run" << std::endl;
 }
 
 MainWindow::~MainWindow()

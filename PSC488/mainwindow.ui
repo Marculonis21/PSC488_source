@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>700</width>
     <height>600</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>700</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -22,8 +28,8 @@
      <rect>
       <x>30</x>
       <y>30</y>
-      <width>171</width>
-      <height>51</height>
+      <width>170</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="font">
@@ -125,8 +131,8 @@
      <rect>
       <x>230</x>
       <y>30</y>
-      <width>171</width>
-      <height>51</height>
+      <width>170</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -159,29 +165,54 @@
      <enum>QLCDNumber::Flat</enum>
     </property>
     <property name="value" stdset="0">
-     <double>123.810000000000002</double>
+     <double>124.000000000000000</double>
     </property>
     <property name="intValue" stdset="0">
      <number>124</number>
+    </property>
+   </widget>
+   <widget class="QCustomPlot" name="plotPanel" native="true">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>100</y>
+      <width>640</width>
+      <height>340</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>640</width>
+      <height>340</height>
+     </size>
     </property>
    </widget>
    <zorder>monitorVolts</zorder>
    <zorder>monitorAmps</zorder>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
+   <zorder>plotPanel</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>700</width>
      <height>22</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -373,7 +373,7 @@
      <number>0</number>
     </property>
     <property name="maxVisibleItems">
-     <number>3</number>
+     <number>4</number>
     </property>
     <property name="insertPolicy">
      <enum>QComboBox::NoInsert</enum>

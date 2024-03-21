@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <qstandarditemmodel.h>
+#include <vector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -13,12 +15,14 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+    QStandardItemModel* comboModel;
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
-    void on_currentEdit_textChanged(const QString &arg1);
+    void on_currentEdit_textChanged(const QString &text);
 
     void on_voltageCombo_currentIndexChanged(int index);
 

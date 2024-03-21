@@ -17,6 +17,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_currentEdit_textChanged(const QString &arg1);
+
+    void on_voltageCombo_currentIndexChanged(int index);
+
+    void on_setButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

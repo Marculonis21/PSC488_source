@@ -16,3 +16,21 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_currentEdit_textChanged(const QString &arg1)
+{
+
+}
+
+
+void MainWindow::on_voltageCombo_currentIndexChanged(int index)
+{
+
+}
+
+
+void MainWindow::on_setButton_clicked()
+{
+
+}
+

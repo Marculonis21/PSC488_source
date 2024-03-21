@@ -96,6 +96,9 @@
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
+    <property name="textInteractionFlags">
+     <set>Qt::NoTextInteraction</set>
+    </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="enabled">
@@ -130,6 +133,9 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="textInteractionFlags">
+     <set>Qt::NoTextInteraction</set>
     </property>
    </widget>
    <widget class="QLCDNumber" name="monitorVolts">
@@ -225,6 +231,9 @@
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
+    <property name="textInteractionFlags">
+     <set>Qt::NoTextInteraction</set>
+    </property>
    </widget>
    <widget class="QLabel" name="label_4">
     <property name="enabled">
@@ -289,7 +298,7 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="currentEdit">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -333,7 +342,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="voltageCombo">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -358,10 +367,10 @@
      <bool>false</bool>
     </property>
     <property name="currentText">
-     <string/>
+     <string>0.0 V</string>
     </property>
     <property name="currentIndex">
-     <number>-1</number>
+     <number>0</number>
     </property>
     <property name="maxVisibleItems">
      <number>3</number>
@@ -387,6 +396,11 @@
     <property name="modelColumn">
      <number>0</number>
     </property>
+    <item>
+     <property name="text">
+      <string>0.0 V</string>
+     </property>
+    </item>
     <item>
      <property name="text">
       <string>0.1 V</string>
@@ -456,7 +470,7 @@
      <set>Qt::NoTextInteraction</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="setButton">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -475,7 +489,7 @@
      <string>SET</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="currentShow">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -522,7 +536,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
+   <widget class="QLineEdit" name="voltageShow">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -619,7 +633,7 @@
      <set>Qt::NoTextInteraction</set>
     </property>
    </widget>
-   <zorder>lineEdit_3</zorder>
+   <zorder>currentEdit</zorder>
    <zorder>monitorVolts</zorder>
    <zorder>monitorAmps</zorder>
    <zorder>label</zorder>
@@ -628,11 +642,11 @@
    <zorder>label_3</zorder>
    <zorder>label_4</zorder>
    <zorder>line</zorder>
-   <zorder>comboBox</zorder>
+   <zorder>voltageCombo</zorder>
    <zorder>label_5</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>lineEdit_4</zorder>
-   <zorder>lineEdit_5</zorder>
+   <zorder>setButton</zorder>
+   <zorder>currentShow</zorder>
+   <zorder>voltageShow</zorder>
    <zorder>label_6</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">

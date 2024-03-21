@@ -384,9 +384,6 @@
     <property name="minimumContentsLength">
      <number>0</number>
     </property>
-    <property name="placeholderText">
-     <string>0 V</string>
-    </property>
     <property name="duplicatesEnabled">
      <bool>false</bool>
     </property>
@@ -667,7 +664,7 @@
   <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
-   <header>qcustomplot.hpp</header>
+   <header>qcustomplot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

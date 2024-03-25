@@ -56,3 +56,24 @@ void MainWindow::on_setButton_clicked()
     ui->currentShow->setText(ui->currentEdit->text());
     ui->voltageShow->setText(ui->voltageCombo->currentText());
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+
+}
+

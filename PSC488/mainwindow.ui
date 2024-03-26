@@ -851,7 +851,7 @@ padding-right: 5px;
        </property>
       </item>
      </widget>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="psu_connectButton">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -870,7 +870,7 @@ padding-right: 5px;
        <string>Connect</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="psu_checkHealthButton">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -886,7 +886,7 @@ padding-right: 5px;
        </font>
       </property>
       <property name="text">
-       <string>Check2</string>
+       <string>CheckHealth</string>
       </property>
      </widget>
      <widget class="QPushButton" name="pushButton_3">

@@ -13,8 +13,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets SerialPort)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport SerialPort)
 
 add_subdirectory(QCustomPlot-library) 
 
@@ -48,7 +48,9 @@ else()
 endif()
 
 target_link_libraries(PSC488 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
-    Qt${QT_VERSION_MAJOR}::PrintSupport qcustomplot)
+    Qt${QT_VERSION_MAJOR}::PrintSupport 
+    Qt${QT_VERSION_MAJOR}::SerialPort 
+    qcustomplot)
 
 target_compile_definitions(PSC488 PRIVATE QCUSTOMPLOT_USE_LIBRARY)
 

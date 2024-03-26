@@ -6,6 +6,8 @@
 #include <qstandarditemmodel.h>
 #include <qvalidator.h>
 
+#include "psu.hpp"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -16,12 +18,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->currentEdit->setValidator(new QDoubleValidator(0.0, 200.0, 2));
 
-    this->comboModel = qobject_cast<QStandardItemModel *>(ui->voltageCombo->model());
+    this->psu = std::make_unique<Psu>(ui->textBrowser);
+    /* this->comboModel = qobject_cast<QStandardItemModel *>(ui->voltageCombo->model()); */
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
 }
 
 void MainWindow::on_currentEdit_textChanged(const QString &text)
@@ -31,13 +33,14 @@ void MainWindow::on_currentEdit_textChanged(const QString &text)
     double value = text.toDouble();
     int index = ui->voltageCombo->currentIndex();
 
-    this->comboModel->item(0)->setEnabled(true);
-    this->comboModel->item(1)->setEnabled(value <= 172.8);
-    this->comboModel->item(2)->setEnabled(value <= 172);
-    this->comboModel->item(3)->setEnabled(value <= 170);
+    QStandardItemModel* comboModel = qobject_cast<QStandardItemModel *>(ui->voltageCombo->model()); 
+    comboModel->item(0)->setEnabled(true);
+    comboModel->item(1)->setEnabled(value <= 172.8);
+    comboModel->item(2)->setEnabled(value <= 172);
+    comboModel->item(3)->setEnabled(value <= 170);
 
-    if (!this->comboModel->item(index)->isEnabled()) {
-        while(!this->comboModel->item(index)->isEnabled()) {
+    if (!comboModel->item(index)->isEnabled()) {
+        while(!comboModel->item(index)->isEnabled()) {
             index--;
         }
         ui->voltageCombo->setCurrentIndex(index);
@@ -57,14 +60,14 @@ void MainWindow::on_setButton_clicked()
     ui->voltageShow->setText(ui->voltageCombo->currentText());
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_psu_connectButton_clicked()
 {
-
+    psu->connect(ui->comboBox->currentText());
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_psu_checkHealthButton_clicked()
 {
-
+    psu->checkHealth();
 }
 
 void MainWindow::on_pushButton_3_clicked()

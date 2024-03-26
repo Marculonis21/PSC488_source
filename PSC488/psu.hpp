@@ -1,4 +1,4 @@
-#include <QtSerialPort/qserialport.h>
+#include <QSerialPort>
 #include <qobjectdefs.h>
 #include <qwidget.h>
 #include <qtextbrowser.h>
@@ -18,10 +18,12 @@ public:
 
     void connect(const QString &port);
     void checkHealth();
+    bool isConnected();
 
 private:
     QSerialPort *mSerial;
     QTextBrowser *textBrowser;
+    bool connected = false;
 
     void write(const std::string &command);
 

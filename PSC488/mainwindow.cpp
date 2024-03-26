@@ -60,23 +60,14 @@ void MainWindow::on_setButton_clicked()
     ui->voltageShow->setText(ui->voltageCombo->currentText());
 }
 
-void MainWindow::on_psu_connectButton_clicked()
+void MainWindow::on_psu_conn_connect_clicked()
 {
     psu->connect(ui->comboBox->currentText());
 }
 
-void MainWindow::on_psu_checkHealthButton_clicked()
+void MainWindow::on_psu_conn_checkHealth_clicked()
 {
     psu->checkHealth();
 }
 
-void MainWindow::on_pushButton_3_clicked()
-{
-
-}
-
-void MainWindow::on_pushButton_4_clicked()
-{
-
-}
 

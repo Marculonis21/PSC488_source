@@ -851,82 +851,626 @@ padding-right: 5px;
        </property>
       </item>
      </widget>
-     <widget class="QPushButton" name="psu_connectButton">
+     <widget class="QFrame" name="controlsFrame">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>130</y>
-        <width>75</width>
-        <height>35</height>
+        <x>10</x>
+        <y>90</y>
+        <width>331</width>
+        <height>441</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI Emoji</family>
-        <pointsize>10</pointsize>
-       </font>
+      <property name="autoFillBackground">
+       <bool>false</bool>
       </property>
-      <property name="text">
-       <string>Connect</string>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(250, 250, 250)</string>
       </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="lineWidth">
+       <number>1</number>
+      </property>
+      <property name="midLineWidth">
+       <number>0</number>
+      </property>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>1</y>
+         <width>101</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>12</pointsize>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Connections</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::NoTextInteraction</set>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_conn_help">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>30</y>
+         <width>91</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Help</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_conn_connect">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>30</y>
+         <width>91</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Connect</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_conn_checkHealth">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>30</y>
+         <width>91</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>CheckHealth</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_17">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>161</y>
+         <width>101</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>12</pointsize>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Measurements</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::NoTextInteraction</set>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_meas_sourceVolt">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>190</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Source Volt</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_meas_measureVolt">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>230</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Measure Volt</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_meas_sourceCurr">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>190</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Source Curr</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="Line" name="line_2">
+       <property name="geometry">
+        <rect>
+         <x>1</x>
+         <y>150</y>
+         <width>330</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_meas_measureCurr">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>230</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Measure Curr</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_18">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>321</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>12</pointsize>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Remote/Local</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::NoTextInteraction</set>
+       </property>
+      </widget>
+      <widget class="Line" name="line_3">
+       <property name="geometry">
+        <rect>
+         <x>1</x>
+         <y>310</y>
+         <width>330</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_conn_localQ">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>350</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Local?</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_conn_remoteLocalSwitch">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>390</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>SWITCH</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_conn_remoteQ">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>350</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Remote?</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_meas_maxVolt">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>270</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Max Volt?</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_meas_maxCurr">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>270</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Max Curr?</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_psu_funcOutputSwitch">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>110</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>Turn on/Turn off</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_19">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>81</y>
+         <width>101</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>12</pointsize>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>PSU</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::NoTextInteraction</set>
+       </property>
+      </widget>
+      <widget class="Line" name="line_4">
+       <property name="geometry">
+        <rect>
+         <x>1</x>
+         <y>70</y>
+         <width>330</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="psu_psu_funcOutputQ">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>110</y>
+         <width>111</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Emoji</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(238, 238, 238)</string>
+       </property>
+       <property name="text">
+        <string>ON/OFF?</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <zorder>line_2</zorder>
+      <zorder>line_4</zorder>
+      <zorder>line_3</zorder>
+      <zorder>label_16</zorder>
+      <zorder>psu_conn_help</zorder>
+      <zorder>psu_conn_connect</zorder>
+      <zorder>psu_conn_checkHealth</zorder>
+      <zorder>label_17</zorder>
+      <zorder>psu_meas_sourceVolt</zorder>
+      <zorder>psu_meas_measureVolt</zorder>
+      <zorder>psu_meas_sourceCurr</zorder>
+      <zorder>psu_meas_measureCurr</zorder>
+      <zorder>label_18</zorder>
+      <zorder>psu_conn_localQ</zorder>
+      <zorder>psu_conn_remoteLocalSwitch</zorder>
+      <zorder>psu_conn_remoteQ</zorder>
+      <zorder>psu_meas_maxVolt</zorder>
+      <zorder>psu_meas_maxCurr</zorder>
+      <zorder>psu_psu_funcOutputSwitch</zorder>
+      <zorder>label_19</zorder>
+      <zorder>psu_psu_funcOutputQ</zorder>
      </widget>
-     <widget class="QPushButton" name="psu_checkHealthButton">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>230</y>
-        <width>75</width>
-        <height>35</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI Emoji</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>CheckHealth</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_3">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>180</y>
-        <width>75</width>
-        <height>35</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI Emoji</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Check1</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_4">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>280</y>
-        <width>75</width>
-        <height>35</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI Emoji</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Check3</string>
-      </property>
-     </widget>
+     <zorder>controlsFrame</zorder>
+     <zorder>textBrowser</zorder>
+     <zorder>comboBox</zorder>
+     <zorder>label_7</zorder>
+     <zorder>label_15</zorder>
+     <zorder>comboBox_3</zorder>
     </widget>
    </widget>
   </widget>
@@ -943,21 +1487,6 @@ padding-right: 5px;
     <bool>false</bool>
    </property>
   </widget>
-  <action name="actionNew">
-   <property name="text">
-    <string>New</string>
-   </property>
-  </action>
-  <action name="actionNew2">
-   <property name="text">
-    <string>New2</string>
-   </property>
-  </action>
-  <action name="actionaea">
-   <property name="text">
-    <string>aea</string>
-   </property>
-  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -974,14 +1503,7 @@ padding-right: 5px;
   <tabstop>textBrowser</tabstop>
   <tabstop>voltageShow</tabstop>
   <tabstop>currentShow</tabstop>
-  <tabstop>voltageShow_2</tabstop>
-  <tabstop>setButton_2</tabstop>
-  <tabstop>currentEdit_2</tabstop>
   <tabstop>setButton</tabstop>
-  <tabstop>currentShow_2</tabstop>
-  <tabstop>textBrowser_2</tabstop>
-  <tabstop>comboBox_2</tabstop>
-  <tabstop>voltageCombo_2</tabstop>
  </tabstops>
  <resources/>
  <connections/>

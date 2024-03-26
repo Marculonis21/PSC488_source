@@ -32,10 +32,8 @@ private slots:
     void on_currentEdit_textChanged(const QString &text);
     void on_voltageCombo_currentIndexChanged(int index);
     void on_setButton_clicked();
-    void on_psu_connectButton_clicked();
-    void on_psu_checkHealthButton_clicked();
-    void on_pushButton_3_clicked();
-    void on_pushButton_4_clicked();
+    void on_psu_conn_connect_clicked();
+    void on_psu_conn_checkHealth_clicked();
 
 };
 

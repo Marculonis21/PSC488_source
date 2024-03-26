@@ -27,13 +27,24 @@ void Psu::connect(const QString &port)
     mSerial->setFlowControl(QSerialPort::NoFlowControl);
 
     textBrowser->insertPlainText(QString("PSU (on %1) serial connected\n").arg(port));
+    connected = true;
 
     mSerial->clear();
     write("*IDN?");
 }
 
+bool Psu::isConnected()
+{
+    return connected;
+}
+
 void Psu::checkHealth()
 {
+    if(!isConnected()) {
+        this->textBrowser->insertPlainText("PSU not connected");
+        return;
+    }
+
     std::cout << "check health" << std::endl;
     write("*TST?");
 }

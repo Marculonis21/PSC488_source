@@ -15,15 +15,24 @@ class Psu : public QObject
 public:
     Psu(QTextBrowser *textBrowser);
     virtual ~Psu();
+    void connect(const QString &com);
+    void powerSwitch();
+    void remoteSwitch();
 
-    void connect(const QString &port);
+    void set(const std::string &command, const std::string &arg="");
+    std::string query(const std::string &query);
+
     void checkHealth();
     bool isConnected();
-
+    bool isTurnedOn();
+    bool isRemote();
+    
 private:
-    QSerialPort *mSerial;
+    QSerialPort *port;
     QTextBrowser *textBrowser;
     bool connected = false;
+    bool power = false;
+    bool remote = false;
 
     void write(const std::string &command);
 

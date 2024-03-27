@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 
 project(PSC488 VERSION 0.1 LANGUAGES CXX)
 
-
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -14,8 +13,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
-find_package(Qt6 REQUIRED COMPONENTS SerialPort)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport SerialPort)
 
 add_subdirectory(QCustomPlot-library) 
 
@@ -50,7 +48,7 @@ endif()
 
 target_link_libraries(PSC488 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::PrintSupport 
-    Qt6::SerialPort
+    Qt${QT_VERSION_MAJOR}::SerialPort
     qcustomplot)
 
 target_compile_definitions(PSC488 PRIVATE QCUSTOMPLOT_USE_LIBRARY)

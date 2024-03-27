@@ -4,38 +4,72 @@
 
 Psu::Psu(QTextBrowser *textBrowser)
 {
-    this->mSerial = new QSerialPort();
+    this->port = new QSerialPort();
     this->textBrowser = textBrowser;
 
-    QObject::connect(mSerial, &QSerialPort::readyRead, 
+    QObject::connect(port, &QSerialPort::readyRead, 
                               this, 
                               &Psu::serialReadyRead);
 }
 
 Psu::~Psu()
 {
-    delete mSerial;
+    delete port;
 }
 
-void Psu::connect(const QString &port)
+void Psu::connect(const QString &com)
 {
-    mSerial->setPortName(port);
-    mSerial->setBaudRate(QSerialPort::Baud9600);
-    mSerial->setDataBits(QSerialPort::Data8);
-    mSerial->setStopBits(QSerialPort::OneStop);
-    mSerial->setParity(QSerialPort::NoParity);
-    mSerial->setFlowControl(QSerialPort::NoFlowControl);
+    port->setPortName(com);
+    port->setBaudRate(QSerialPort::Baud9600);
+    port->setDataBits(QSerialPort::Data8);
+    port->setStopBits(QSerialPort::OneStop);
+    port->setParity(QSerialPort::NoParity);
+    port->setFlowControl(QSerialPort::NoFlowControl);
 
-    textBrowser->insertPlainText(QString("PSU (on %1) serial connected\n").arg(port));
+    textBrowser->insertPlainText(QString("PSU (on %1) serial connected\n").arg(com));
     connected = true;
 
-    mSerial->clear();
+    port->clear();
     write("*IDN?");
+
+    // CHECK IF it's powered up or not + Check if remote/local mode
+    // power = ???
+    // remote = ???
 }
 
-bool Psu::isConnected()
+void Psu::powerSwitch()
 {
-    return connected;
+    set("SO:FU:OUTP", std::to_string(!this->power));
+
+    power = !power;
+}
+
+void Psu::remoteSwitch()
+{
+    if (this->remote) {
+        set("LOC");
+    }
+    else {
+        set("REM");
+    }
+
+    remote = !remote;
+}
+
+std::string Psu::query(const std::string &query)
+{
+    write(query+"?");
+
+    // no return atm (create receive waiting methods)
+    return "";
+}
+
+void Psu::set(const std::string &command, const std::string &arg)
+{
+    auto _command = command;
+    if (arg != "") _command += " " + arg;
+
+    write(_command);
 }
 
 void Psu::checkHealth()
@@ -51,19 +85,34 @@ void Psu::checkHealth()
 
 void Psu::write(const std::string &command)
 {
-    mSerial->clear();
-    mSerial->setRequestToSend(false);
-    mSerial->write(command.data());
-    mSerial->flush();
-    mSerial->setRequestToSend(true);
+    port->clear();
+    port->setRequestToSend(false);
+    port->write(command.data());
+    port->flush();
+    port->setRequestToSend(true);
 
     textBrowser->insertPlainText(QString("PSU command %1 sent\n").arg(command.data()));
 }
 
 void Psu::serialReadyRead()
 {
-    while(mSerial->canReadLine()) {
-        auto response = QString(mSerial->readLine());
+    while(port->canReadLine()) {
+        auto response = QString(port->readLine());
         textBrowser->insertPlainText(QString("received '%1'").arg(response));
     }
+}
+
+bool Psu::isConnected()
+{
+    return connected;
+}
+
+bool Psu::isTurnedOn()
+{
+    return power;
+}
+
+bool Psu::isRemote()
+{
+    return remote;
 }

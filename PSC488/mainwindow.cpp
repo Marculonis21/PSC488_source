@@ -5,6 +5,7 @@
 #include <qobject.h>
 #include <qstandarditemmodel.h>
 #include <qvalidator.h>
+#include <string>
 
 #include "psu.hpp"
 
@@ -60,14 +61,66 @@ void MainWindow::on_setButton_clicked()
     ui->voltageShow->setText(ui->voltageCombo->currentText());
 }
 
+// PSU CONNECTION
 void MainWindow::on_psu_conn_connect_clicked()
 {
     psu->connect(ui->comboBox->currentText());
 }
-
 void MainWindow::on_psu_conn_checkHealth_clicked()
 {
     psu->checkHealth();
 }
+void MainWindow::on_psu_conn_help_clicked()
+{
+    auto out = psu->query("HELP");
+}
 
+// PSU MEASUREMENTS
+void MainWindow::on_psu_meas_sourceVolt_clicked()
+{
+    auto out = psu->query("SO:VO");
+}
+void MainWindow::on_psu_meas_measureVolt_clicked()
+{
+    auto out = psu->query("ME:VO");
+}
+void MainWindow::on_psu_meas_sourceCurr_clicked()
+{
+    auto out = psu->query("SO:CU");
+}
+void MainWindow::on_psu_meas_measureCurr_clicked()
+{
+    auto out = psu->query("ME:CU");
+}
+void MainWindow::on_psu_meas_maxVolt_clicked()
+{
+    auto out = psu->query("SO:VO:MA");
+}
+void MainWindow::on_psu_meas_maxCurr_clicked()
+{
+    auto out = psu->query("SO:CU:MA");
+}
 
+// PSU ON OFF FUNCS
+void MainWindow::on_psu_psu_funcOutputQ_clicked()
+{
+    auto out = psu->query("FU:OUTP");
+}
+void MainWindow::on_psu_psu_funcOutputSwitch_clicked()
+{
+    psu->powerSwitch();
+}
+
+// PSU REMOTE/LOCAL
+void MainWindow::on_psu_conn_localQ_clicked()
+{
+    auto out = psu->query("LOC");
+}
+void MainWindow::on_psu_conn_remoteQ_clicked()
+{
+    auto out = psu->query("REM");
+}
+void MainWindow::on_psu_conn_remoteLocalSwitch_clicked()
+{
+    psu->remoteSwitch();
+}

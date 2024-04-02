@@ -1,6 +1,4 @@
 #include "psu.hpp"
-#include <qnamespace.h>
-#include <iostream>
 
 Psu::Psu(QTextBrowser *textBrowser)
 {
@@ -10,6 +8,8 @@ Psu::Psu(QTextBrowser *textBrowser)
     QObject::connect(port, &QSerialPort::readyRead, 
                               this, 
                               &Psu::serialReadyRead);
+
+    serialResponse.clear();
 }
 
 Psu::~Psu()
@@ -30,11 +30,11 @@ void Psu::connect(const QString &com)
     connected = true;
 
     port->clear();
-    write("*IDN?");
+    textBrowser->insertPlainText(query("*IDN"));
 
     // CHECK IF it's powered up or not + Check if remote/local mode
-    // power = ???
-    // remote = ???
+    power = query("SO:FU:OUTP") == "1";
+    remote = query("REM") == "1";
 }
 
 void Psu::powerSwitch()
@@ -56,12 +56,9 @@ void Psu::remoteSwitch()
     remote = !remote;
 }
 
-std::string Psu::query(const std::string &query)
+QString Psu::query(const std::string &query)
 {
-    write(query+"?");
-
-    // no return atm (create receive waiting methods)
-    return "";
+    return SerialComm::send(this, this->port, query+"?");
 }
 
 void Psu::set(const std::string &command, const std::string &arg)
@@ -69,7 +66,7 @@ void Psu::set(const std::string &command, const std::string &arg)
     auto _command = command;
     if (arg != "") _command += " " + arg;
 
-    write(_command);
+    SerialComm::send(this, this->port, _command, false);
 }
 
 void Psu::checkHealth()
@@ -80,26 +77,12 @@ void Psu::checkHealth()
     }
 
     std::cout << "check health" << std::endl;
-    write("*TST?");
-}
-
-void Psu::write(const std::string &command)
-{
-    port->clear();
-    port->setRequestToSend(false);
-    port->write(command.data());
-    port->flush();
-    port->setRequestToSend(true);
-
-    textBrowser->insertPlainText(QString("PSU command %1 sent\n").arg(command.data()));
+    textBrowser->insertPlainText(query("*TST"));
 }
 
 void Psu::serialReadyRead()
 {
-    while(port->canReadLine()) {
-        auto response = QString(port->readLine());
-        textBrowser->insertPlainText(QString("received '%1'").arg(response));
-    }
+    SerialComm::receive(this, this->port, this->textBrowser);
 }
 
 bool Psu::isConnected()

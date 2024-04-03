@@ -64,7 +64,7 @@
      <enum>QTabWidget::Triangular</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="iconSize">
      <size>
@@ -708,6 +708,21 @@ padding-right: 5px;
        <bool>false</bool>
       </property>
      </widget>
+     <zorder>monitorVolts</zorder>
+     <zorder>voltageShow</zorder>
+     <zorder>label_4</zorder>
+     <zorder>label_2</zorder>
+     <zorder>voltageCombo</zorder>
+     <zorder>label_6</zorder>
+     <zorder>monitorAmps</zorder>
+     <zorder>line</zorder>
+     <zorder>currentEdit</zorder>
+     <zorder>label</zorder>
+     <zorder>setButton</zorder>
+     <zorder>plotPanel</zorder>
+     <zorder>label_3</zorder>
+     <zorder>label_5</zorder>
+     <zorder>currentShow</zorder>
     </widget>
     <widget class="QWidget" name="PSU_Connection">
      <property name="contextMenuPolicy">

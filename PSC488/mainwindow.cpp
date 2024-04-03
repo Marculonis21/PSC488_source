@@ -4,23 +4,42 @@
 #include <qnamespace.h>
 #include <qobject.h>
 #include <qstandarditemmodel.h>
+#include <qthread.h>
 #include <qvalidator.h>
 #include <string>
+#include <QSerialPortInfo>
 
 #include "psu.hpp"
+
+const double topLimit = 172.8;
+const double midLimit = 172.0;
+const double lowLimit = 170.0;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->tabWidget->setCurrentIndex(0);
+
     ui->monitorAmps->display(173.20);
     ui->monitorVolts->display(178.11);
+
+    ui->comboBox_3->setCurrentIndex(2);
+    ui->comboBox_3->setEnabled(false);
 
     ui->currentEdit->setValidator(new QDoubleValidator(0.0, 200.0, 2));
 
     this->psu = std::make_unique<Psu>(ui->textBrowser);
-    /* this->comboModel = qobject_cast<QStandardItemModel *>(ui->voltageCombo->model()); */
+
+    on_currentEdit_textChanged(ui->currentEdit->text());
+
+    // find com ports
+    
+    ui->comboBox_3->clear();
+    for (QSerialPortInfo port : QSerialPortInfo::availablePorts()) {
+        ui->comboBox_3->addItem(port.portName());
+    }
 }
 
 MainWindow::~MainWindow()
@@ -36,9 +55,9 @@ void MainWindow::on_currentEdit_textChanged(const QString &text)
 
     QStandardItemModel* comboModel = qobject_cast<QStandardItemModel *>(ui->voltageCombo->model()); 
     comboModel->item(0)->setEnabled(true);
-    comboModel->item(1)->setEnabled(value <= 172.8);
-    comboModel->item(2)->setEnabled(value <= 172);
-    comboModel->item(3)->setEnabled(value <= 170);
+    comboModel->item(1)->setEnabled(value <= topLimit);
+    comboModel->item(2)->setEnabled(value <= midLimit);
+    comboModel->item(3)->setEnabled(value <= lowLimit);
 
     if (!comboModel->item(index)->isEnabled()) {
         while(!comboModel->item(index)->isEnabled()) {

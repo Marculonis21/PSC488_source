@@ -30,6 +30,8 @@ void Psu::connect(const QString &com)
     connected = true;
 
     port->clear();
+    QThread::msleep(50);
+
     textBrowser->insertPlainText(query("*IDN"));
 
     // CHECK IF it's powered up or not + Check if remote/local mode

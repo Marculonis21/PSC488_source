@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="5.0">
+<ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
@@ -738,7 +738,7 @@ padding-right: 5px;
        <set>QTextEdit::AutoBulletList</set>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBox">
+     <widget class="QComboBox" name="portCombo">
       <property name="geometry">
        <rect>
         <x>100</x>
@@ -812,7 +812,7 @@ padding-right: 5px;
        <string>Baud Rate</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBox_3">
+     <widget class="QComboBox" name="baudCombo">
       <property name="geometry">
        <rect>
         <x>100</x>
@@ -1465,12 +1465,41 @@ padding-right: 5px;
       <zorder>label_19</zorder>
       <zorder>psu_psu_funcOutputQ</zorder>
      </widget>
+     <widget class="QPushButton" name="refreshButton">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>19</y>
+        <width>24</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset theme="edit-undo"/>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
+      </property>
+      <property name="shortcut">
+       <string>F5</string>
+      </property>
+     </widget>
      <zorder>controlsFrame</zorder>
      <zorder>textBrowser</zorder>
-     <zorder>comboBox</zorder>
+     <zorder>portCombo</zorder>
      <zorder>label_7</zorder>
      <zorder>label_15</zorder>
-     <zorder>comboBox_3</zorder>
+     <zorder>baudCombo</zorder>
+     <zorder>refreshButton</zorder>
     </widget>
    </widget>
   </widget>
@@ -1499,7 +1528,7 @@ padding-right: 5px;
  <tabstops>
   <tabstop>currentEdit</tabstop>
   <tabstop>voltageCombo</tabstop>
-  <tabstop>comboBox</tabstop>
+  <tabstop>portCombo</tabstop>
   <tabstop>textBrowser</tabstop>
   <tabstop>voltageShow</tabstop>
   <tabstop>currentShow</tabstop>

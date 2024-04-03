@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->monitorAmps->display(173.20);
     ui->monitorVolts->display(178.11);
 
-    ui->comboBox_3->setCurrentIndex(2);
-    ui->comboBox_3->setEnabled(false);
+    ui->baudCombo->setCurrentIndex(2);
+    ui->baudCombo->setEnabled(false);
 
     ui->currentEdit->setValidator(new QDoubleValidator(0.0, 200.0, 2));
 
@@ -36,9 +36,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     // find com ports
     
-    ui->comboBox_3->clear();
+    ui->portCombo->clear();
     for (QSerialPortInfo port : QSerialPortInfo::availablePorts()) {
-        ui->comboBox_3->addItem(port.portName());
+        ui->portCombo->addItem(port.portName());
     }
 }
 
@@ -46,6 +46,10 @@ MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::on_refreshButton_clicked()
+{
+    std::cout <<"hey" << std::endl;
+}
 void MainWindow::on_currentEdit_textChanged(const QString &text)
 {
     std::cout << "current edit change: " << text.toStdString() << std::endl;
@@ -83,7 +87,7 @@ void MainWindow::on_setButton_clicked()
 // PSU CONNECTION
 void MainWindow::on_psu_conn_connect_clicked()
 {
-    psu->connect(ui->comboBox->currentText());
+    psu->connect(ui->portCombo->currentText());
 }
 void MainWindow::on_psu_conn_checkHealth_clicked()
 {

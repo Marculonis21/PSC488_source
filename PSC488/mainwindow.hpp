@@ -12,13 +12,11 @@ QT_BEGIN_NAMESPACE
 namespace Ui {
     class MainWindow;
 }
-QT_END_NAMESPACE;
-
-
+QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -47,6 +45,7 @@ private slots:
     void on_psu_meas_maxCurr_clicked();
     void on_psu_psu_funcOutputQ_clicked();
     void on_psu_psu_funcOutputSwitch_clicked();
+    void on_refreshButton_clicked();
 };
 
 #endif // MAINWINDOW_H

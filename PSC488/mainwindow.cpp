@@ -147,3 +147,7 @@ void MainWindow::on_psu_conn_remoteLocalSwitch_clicked()
 {
     psu->remoteSwitch();
 }
+
+void on_drawTestButton_clicked() {
+
+}

@@ -46,6 +46,7 @@ private slots:
     void on_psu_psu_funcOutputQ_clicked();
     void on_psu_psu_funcOutputSwitch_clicked();
     void on_refreshButton_clicked();
+    void on_drawTestButton_clicked();
 };
 
 #endif // MAINWINDOW_H

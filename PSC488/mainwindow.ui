@@ -708,6 +708,19 @@ padding-right: 5px;
        <bool>false</bool>
       </property>
      </widget>
+     <widget class="QPushButton" name="drawTestButton">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>60</y>
+        <width>71</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Draw Test</string>
+      </property>
+     </widget>
      <zorder>monitorVolts</zorder>
      <zorder>voltageShow</zorder>
      <zorder>label_4</zorder>
@@ -723,6 +736,7 @@ padding-right: 5px;
      <zorder>label_3</zorder>
      <zorder>label_5</zorder>
      <zorder>currentShow</zorder>
+     <zorder>drawTestButton</zorder>
     </widget>
     <widget class="QWidget" name="PSU_Connection">
      <property name="contextMenuPolicy">

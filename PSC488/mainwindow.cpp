@@ -1,4 +1,6 @@
 #include "mainwindow.hpp"
+#include "plot.hpp"
+#include "threadWorker.hpp"
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <qnamespace.h>
@@ -35,11 +37,12 @@ MainWindow::MainWindow(QWidget *parent)
     on_currentEdit_textChanged(ui->currentEdit->text());
 
     // find com ports
-    
     ui->portCombo->clear();
     for (QSerialPortInfo port : QSerialPortInfo::availablePorts()) {
         ui->portCombo->addItem(port.portName());
     }
+
+    this->plot = new Plot(ui->plotPanel);
 }
 
 MainWindow::~MainWindow()
@@ -48,8 +51,27 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_refreshButton_clicked()
 {
-    std::cout <<"hey" << std::endl;
+    ui->portCombo->clear();
+    for (QSerialPortInfo port : QSerialPortInfo::availablePorts()) {
+        ui->portCombo->addItem(port.portName());
+    }
 }
+
+void MainWindow::on_drawTestButton_clicked() {
+    std::cout <<"hey2" << std::endl;
+    /* this->plot->draw(); */
+
+    QThread* thread = new QThread();
+    Worker* worker = new Worker(plot);
+    worker->moveToThread(thread);
+    connect( thread, &QThread::started, worker, &Worker::process);
+    connect( worker, &Worker::finished, thread, &QThread::quit);
+    connect( worker, &Worker::finished, worker, &Worker::deleteLater);
+    connect( thread, &QThread::finished, thread, &QThread::deleteLater);
+    thread->start();
+    std::cout << "Thread started" << std::endl;
+}
+
 void MainWindow::on_currentEdit_textChanged(const QString &text)
 {
     std::cout << "current edit change: " << text.toStdString() << std::endl;
@@ -146,8 +168,4 @@ void MainWindow::on_psu_conn_remoteQ_clicked()
 void MainWindow::on_psu_conn_remoteLocalSwitch_clicked()
 {
     psu->remoteSwitch();
-}
-
-void on_drawTestButton_clicked() {
-
 }

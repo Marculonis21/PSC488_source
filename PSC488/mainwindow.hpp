@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 
+#include "plot.hpp"
 #include "psu.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -25,6 +26,8 @@ public:
 private:
     std::unique_ptr<Ui::MainWindow> ui;
     std::unique_ptr<Psu> psu;
+
+    Plot *plot;
 
 private slots:
     void on_currentEdit_textChanged(const QString &text);

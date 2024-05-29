@@ -22,11 +22,17 @@ void Psu::connect(const QString &com)
     port->setPortName(com);
     port->setBaudRate(QSerialPort::Baud9600);
     port->setDataBits(QSerialPort::Data8);
-    port->setStopBits(QSerialPort::OneStop);
+    port->setStopBits(QSerialPort::TwoStop);
     port->setParity(QSerialPort::NoParity);
     port->setFlowControl(QSerialPort::NoFlowControl);
 
-    textBrowser->insertPlainText(QString("PSU (on %1) serial connected\n").arg(com));
+    if(port->open(QIODevice::ReadWrite)) {
+        textBrowser->insertPlainText(QString("PSU (on %1) serial start\n").arg(com));
+    } else {
+        textBrowser->insertPlainText("Serial port not connected!\n");
+        return;
+    }
+
     connected = true;
 
     port->clear();
@@ -42,7 +48,6 @@ void Psu::connect(const QString &com)
 void Psu::powerSwitch()
 {
     set("SO:FU:OUTP", std::to_string(!this->power));
-
     power = !power;
 }
 

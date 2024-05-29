@@ -8,6 +8,7 @@
 
 #include "plot.hpp"
 #include "psu.hpp"
+#include "threadWorker.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,7 +28,10 @@ private:
     std::unique_ptr<Ui::MainWindow> ui;
     std::unique_ptr<Psu> psu;
 
-    Plot *plot;
+    Plot *plot = nullptr;
+    PlottingThread *plottingThread = nullptr;
+
+    void refreshPorts();
 
 private slots:
     void on_currentEdit_textChanged(const QString &text);
@@ -50,6 +54,8 @@ private slots:
     void on_psu_psu_funcOutputSwitch_clicked();
     void on_refreshButton_clicked();
     void on_drawTestButton_clicked();
+
+    void plottingDone();
 };
 
 #endif // MAINWINDOW_H

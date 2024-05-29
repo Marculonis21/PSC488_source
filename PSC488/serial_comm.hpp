@@ -1,4 +1,4 @@
-#include <QSerialPort>
+#include <QtSerialPort/QSerialPort>
 #include <QCoreApplication>
 #include <QThread>
 #include <QTextEdit>
@@ -29,7 +29,8 @@ struct SerialComm
 
         port->setRequestToSend(false);
 
-        port->write((command + "\r\n").data());
+        std::cout << command << std::endl;
+        port->write((command + "\n").data());
         port->flush();
         while(port->bytesToWrite())
         {
@@ -49,6 +50,7 @@ struct SerialComm
 
         while(port->canReadLine()) {
             response = QString(port->readLine());
+
             device->serialResponse = response;
             std::cout << "response: " << response.toStdString() << std::endl;
 

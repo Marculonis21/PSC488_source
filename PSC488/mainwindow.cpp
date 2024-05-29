@@ -136,7 +136,7 @@ void MainWindow::on_psu_meas_maxCurr_clicked() {
 // PSU ON OFF FUNCS
 void MainWindow::on_psu_psu_funcOutputQ_clicked() {
   /* auto out = psu->query("SO:FU:OUTP"); */
-  psu->set("SO:FU:OUTP OFF");
+  psu->set("SO:FU:OUTP OFF"); // probably not compatible!
 }
 
 void MainWindow::on_psu_psu_funcOutputSwitch_clicked() { psu->powerSwitch(); }
@@ -147,3 +147,16 @@ void MainWindow::on_psu_conn_remoteQ_clicked() { psu->set("REM"); }
 void MainWindow::on_psu_conn_remoteLocalSwitch_clicked() {
   psu->remoteSwitch();
 }
+
+// CUSTOM COMMANDS
+void MainWindow::on_customCommandSendButton_clicked() {
+    // get command from input
+
+    if (ui->customCommandInput->text().isEmpty()) return;
+
+    std::string command = ui->customCommandInput->text().trimmed().toStdString();
+    ui->customCommandInput->clear();
+
+    psu->set(command);
+}
+

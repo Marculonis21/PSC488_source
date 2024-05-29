@@ -33,6 +33,7 @@ private:
 
     void refreshPorts();
 
+    // WHEN ADDING NEW UI SIGNALS - the slots from ui editor seem to be not working properly, so just add the correct function here and it works just fine!
 private slots:
     void on_currentEdit_textChanged(const QString &text);
     void on_voltageCombo_currentIndexChanged(int index);
@@ -54,6 +55,7 @@ private slots:
     void on_psu_psu_funcOutputSwitch_clicked();
     void on_refreshButton_clicked();
     void on_drawTestButton_clicked();
+    void on_customCommandSendButton_clicked();
 
     void plottingDone();
 };

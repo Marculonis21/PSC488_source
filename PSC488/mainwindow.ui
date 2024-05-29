@@ -64,7 +64,7 @@
      <enum>QTabWidget::Triangular</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="iconSize">
      <size>
@@ -753,8 +753,8 @@ padding-right: 5px;
        <rect>
         <x>355</x>
         <y>10</y>
-        <width>331</width>
-        <height>521</height>
+        <width>330</width>
+        <height>470</height>
        </rect>
       </property>
       <property name="verticalScrollBarPolicy">
@@ -1498,19 +1498,27 @@ padding-right: 5px;
       <property name="geometry">
        <rect>
         <x>220</x>
-        <y>19</y>
-        <width>24</width>
-        <height>24</height>
+        <y>16</y>
+        <width>30</width>
+        <height>30</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI Emoji</family>
+        <pointsize>16</pointsize>
+        <italic>false</italic>
+        <bold>false</bold>
+        <underline>false</underline>
+        <stylestrategy>PreferAntialias</stylestrategy>
+        <kerning>true</kerning>
+       </font>
       </property>
       <property name="autoFillBackground">
        <bool>false</bool>
       </property>
       <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset theme="edit-undo"/>
+       <string>⟳</string>
       </property>
       <property name="iconSize">
        <size>
@@ -1521,6 +1529,99 @@ padding-right: 5px;
       <property name="shortcut">
        <string>F5</string>
       </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="autoRepeat">
+       <bool>true</bool>
+      </property>
+      <property name="autoExclusive">
+       <bool>false</bool>
+      </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="customCommandSendButton">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>495</y>
+        <width>60</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI Emoji</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(238, 238, 238)</string>
+      </property>
+      <property name="text">
+       <string>SEND</string>
+      </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="customCommandInput">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>495</y>
+        <width>171</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI Emoji</family>
+        <pointsize>14</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="inputMethodHints">
+       <set>Qt::ImhFormattedNumbersOnly</set>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="frame">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="placeholderText">
+       <string>Command</string>
+      </property>
+      <property name="cursorMoveStyle">
+       <enum>Qt::LogicalMoveStyle</enum>
+      </property>
+      <property name="clearButtonEnabled">
+       <bool>false</bool>
+      </property>
      </widget>
      <zorder>controlsFrame</zorder>
      <zorder>textBrowser</zorder>
@@ -1529,21 +1630,10 @@ padding-right: 5px;
      <zorder>label_15</zorder>
      <zorder>baudCombo</zorder>
      <zorder>refreshButton</zorder>
+     <zorder>customCommandSendButton</zorder>
+     <zorder>customCommandInput</zorder>
     </widget>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>700</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="defaultUp">
-    <bool>false</bool>
-   </property>
   </widget>
  </widget>
  <customwidgets>
@@ -1557,11 +1647,30 @@ padding-right: 5px;
  <tabstops>
   <tabstop>currentEdit</tabstop>
   <tabstop>voltageCombo</tabstop>
-  <tabstop>portCombo</tabstop>
-  <tabstop>textBrowser</tabstop>
-  <tabstop>voltageShow</tabstop>
-  <tabstop>currentShow</tabstop>
   <tabstop>setButton</tabstop>
+  <tabstop>portCombo</tabstop>
+  <tabstop>refreshButton</tabstop>
+  <tabstop>baudCombo</tabstop>
+  <tabstop>psu_conn_connect</tabstop>
+  <tabstop>psu_conn_checkHealth</tabstop>
+  <tabstop>psu_conn_help</tabstop>
+  <tabstop>psu_psu_funcOutputQ</tabstop>
+  <tabstop>psu_psu_funcOutputSwitch</tabstop>
+  <tabstop>psu_meas_sourceVolt</tabstop>
+  <tabstop>psu_meas_sourceCurr</tabstop>
+  <tabstop>psu_meas_measureVolt</tabstop>
+  <tabstop>psu_meas_measureCurr</tabstop>
+  <tabstop>psu_meas_maxVolt</tabstop>
+  <tabstop>psu_meas_maxCurr</tabstop>
+  <tabstop>psu_conn_remoteQ</tabstop>
+  <tabstop>psu_conn_localQ</tabstop>
+  <tabstop>psu_conn_remoteLocalSwitch</tabstop>
+  <tabstop>customCommandInput</tabstop>
+  <tabstop>customCommandSendButton</tabstop>
+  <tabstop>textBrowser</tabstop>
+  <tabstop>drawTestButton</tabstop>
+  <tabstop>currentShow</tabstop>
+  <tabstop>voltageShow</tabstop>
  </tabstops>
  <resources/>
  <connections/>

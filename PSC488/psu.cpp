@@ -5,9 +5,7 @@ Psu::Psu(QTextBrowser *textBrowser)
     this->port = new QSerialPort();
     this->textBrowser = textBrowser;
 
-    QObject::connect(port, &QSerialPort::readyRead, 
-                              this, 
-                              &Psu::serialReadyRead);
+    QObject::connect(port, &QSerialPort::readyRead, this, &Psu::serialReadyRead);
 
     serialResponse.clear();
 }
@@ -38,16 +36,22 @@ void Psu::connect(const QString &com)
     port->clear();
     QThread::msleep(50);
 
-    textBrowser->insertPlainText(query("*IDN"));
+    /* set("CH 14"); */
+
+    query("*IDN");
 
     // CHECK IF it's powered up or not + Check if remote/local mode
-    power = query("SO:FU:OUTP") == "1";
+    /* power = query("SO:FU:OUTP") == "1"; */
+    power = query("SO:FU:RSD") == "0";
     remote = query("REM") == "1";
 }
 
 void Psu::powerSwitch()
 {
-    set("SO:FU:OUTP", std::to_string(!this->power));
+    // Example: SO:FU:RSD 1 - Will enable RSD, hence output will be disabled.
+    // Example: SO:FU:RSD 0 - Will disable RSD, hence output will be enabled.
+    
+    set("SO:FU:RSD", std::to_string(this->power));
     power = !power;
 }
 

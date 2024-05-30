@@ -51,7 +51,7 @@ struct SerialComm
         while(port->canReadLine()) {
             response = QString(port->readLine());
 
-            device->serialResponse = response;
+            device->serialResponse = response.trimmed();
             std::cout << "response: " << response.toStdString() << std::endl;
 
             if(outputBrowser) {

@@ -135,8 +135,10 @@ void MainWindow::on_psu_meas_maxCurr_clicked() {
 
 // PSU ON OFF FUNCS
 void MainWindow::on_psu_psu_funcOutputQ_clicked() {
-  /* auto out = psu->query("SO:FU:OUTP"); */
-  psu->set("SO:FU:OUTP OFF"); // probably not compatible!
+  auto out = psu->query("SO:FU:RSD").trimmed().toStdString();
+
+  if (out == "1") ui->textBrowser->insertPlainText("RSD enabled, output disabled\n");
+  else            ui->textBrowser->insertPlainText("RSD disabled, output enabled\n");
 }
 
 void MainWindow::on_psu_psu_funcOutputSwitch_clicked() { psu->powerSwitch(); }
@@ -145,7 +147,11 @@ void MainWindow::on_psu_psu_funcOutputSwitch_clicked() { psu->powerSwitch(); }
 void MainWindow::on_psu_conn_localQ_clicked() { psu->set("LOC"); }
 void MainWindow::on_psu_conn_remoteQ_clicked() { psu->set("REM"); }
 void MainWindow::on_psu_conn_remoteLocalSwitch_clicked() {
-  psu->remoteSwitch();
+  auto out = psu->query("REM?").trimmed().toStdString();
+  std::cout << out << std::endl;
+
+  if (out == "1") ui->textBrowser->insertPlainText("PSU IS REMOTE\n");
+  else            ui->textBrowser->insertPlainText("PSU IS LOCAL\n");
 }
 
 // CUSTOM COMMANDS

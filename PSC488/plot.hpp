@@ -18,7 +18,9 @@ public:
 
     void placeData(QVector<double> &&x, QVector<double> &&y);
     void appendData(const QVector<double> &x, const QVector<double> &y);
-    void draw();
+    void redraw();
+    void drawTest();
+    void clear();
 
 private:
     QVector<double> xData;

@@ -29,7 +29,8 @@ private:
     std::unique_ptr<Psu> psu;
 
     Plot *plot = nullptr;
-    PlottingThread *plottingThread = nullptr;
+    PlottingTestThread *plottingThread = nullptr;
+    LiveMeasurementThread *liveMeasThread = nullptr;
 
     void refreshPorts();
 

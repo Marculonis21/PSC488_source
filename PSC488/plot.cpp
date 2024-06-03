@@ -11,7 +11,6 @@ Plot::Plot(QCustomPlot *plot)
     this->plot = plot;
     this->plot->xAxis->setRange(0, 100);
     this->plot->yAxis->setRange(0, 173);
-    /* this->plot->yAxis->setRange(0, std::pow(scaleBase, 174.0)); */
 
     this->dataGraph = plot->addGraph();
 
@@ -30,25 +29,11 @@ Plot::Plot(QCustomPlot *plot)
     line3->start->setCoords(0,    172.8);
     line3->end  ->setCoords(1000, 172.8);
 
-/*     line1->start->setCoords(0,    std::pow(scaleBase, 170.0)); */
-/*     line1->end  ->setCoords(1000, std::pow(scaleBase, 170.0)); */
-/*     line2->start->setCoords(0,    std::pow(scaleBase, 172.0)); */
-/*     line2->end  ->setCoords(1000, std::pow(scaleBase, 172.0)); */
-/*     line3->start->setCoords(0,    std::pow(scaleBase, 172.8)); */
-/*     line3->end  ->setCoords(1000, std::pow(scaleBase, 172.8)); */
-
-/*     QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText); */
-/*     this->plot->yAxis->setTicker(textTicker); */
-    
-/*     const int tickCount = 174; */
-/*     for (int i = 0; i < tickCount; ++i) { */
-/*         double value = std::pow(scaleBase, (float)i); */
-/*         textTicker->addTick(value,QString::number(i)); */
-/*     } */
-
     this->plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
     QObject::connect(this->plot->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(rangeX(QCPRange)));
     QObject::connect(this->plot->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(rangeY(QCPRange)));
+
+    clear();
 }
 
 void Plot::appendData(const QVector<double> &x, const QVector<double> &y)
@@ -63,7 +48,15 @@ void Plot::placeData(QVector<double> &&x, QVector<double> &&y)
     this->yData = y;
 }
 
-void Plot::draw()
+void Plot::clear()
+{
+    this->xData.clear();
+    this->yData.clear();
+
+    this->dataGraph->data()->clear();
+}
+
+void Plot::drawTest()
 {
     this->dataGraph->data()->clear();
 
@@ -77,6 +70,13 @@ void Plot::draw()
         this->plot->replot();
         QThread::msleep(100);
     }
+}
+
+void Plot::redraw()
+{
+    this->dataGraph->setPen(QPen(Qt::red));
+    this->dataGraph->setData(xData, yData);
+    this->plot->replot();
 }
 
 void Plot::fixRanges(float lower, QCPAxis *axis)

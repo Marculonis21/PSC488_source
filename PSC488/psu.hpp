@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 #include "serial_comm.hpp"
+#include <exception>
 
 #ifndef PSU_H
 #define PSU_H
@@ -28,6 +29,9 @@ public:
     bool isConnected();
     bool isTurnedOn();
     bool isRemote();
+
+    double measurePSUVoltage();
+    double measurePSUCurrent();
     
     friend class SerialComm;
 
@@ -42,5 +46,16 @@ private:
 private slots:
     void serialReadyRead();
 };
+
+/* class SendException : public std::exception { */
+/*     std::string message; */
+
+/* public: */
+/*     SendException(char * msg) : message(msg) {} */
+
+/*     char* what() { */
+/*         return ("SendException: " + message).data(); */
+/*     } */
+/* }; */
 
 #endif 

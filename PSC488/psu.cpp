@@ -110,3 +110,27 @@ bool Psu::isRemote()
 {
     return remote;
 }
+
+double Psu::measurePSUCurrent()
+{
+    bool ok = false;
+    auto response =  query("ME:CU");
+
+    double result = response.toDouble(&ok);
+    if (ok) return result;
+
+    textBrowser->insertPlainText(QString("Current measurement conversion failed - output %1\n").arg(response));
+    return -1;
+}
+
+double Psu::measurePSUVoltage()
+{
+    bool ok = false;
+    auto response =  query("ME:VO");
+
+    double result = response.toDouble(&ok);
+    if (ok) return result;
+
+    textBrowser->insertPlainText(QString("Voltage measurement conversion failed - output %1\n").arg(response));
+    return -1;
+}

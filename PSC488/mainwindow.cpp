@@ -55,21 +55,33 @@ void MainWindow::refreshPorts() {
 void MainWindow::on_refreshButton_clicked() { refreshPorts(); }
 
 void MainWindow::plottingDone() {
-  delete plottingThread;
-  this->plottingThread = nullptr;
+  delete liveMeasThread;
+  this->liveMeasThread= nullptr;
 }
 
 void MainWindow::on_drawTestButton_clicked() {
   std::cout << "hey2" << std::endl;
   /* this->plot->draw(); */
 
-  if (this->plottingThread != nullptr)
+  if (plottingThread) {
     return;
+  }
 
-  this->plottingThread = new PlottingThread(this->plot);
-  connect(plottingThread, &PlottingThread::resultReady, this,
+  if (liveMeasThread) {
+    liveMeasThread->running = false;
+    return;
+  }
+
+  /* this->plottingThread = new PlottingTestThread(this->plot); */
+  this->liveMeasThread = new LiveMeasurementThread(this->plot, this->psu.get(), ui->monitorAmps, ui->monitorVolts);
+
+  /* connect(plottingThread, &PlottingTestThread::resultReady, this, */
+  /*         &MainWindow::plottingDone); */
+  /* plottingThread->start(); */
+
+  connect(liveMeasThread, &LiveMeasurementThread::resultReady, this,
           &MainWindow::plottingDone);
-  plottingThread->start();
+  liveMeasThread->start();
 
   std::cout << "Thread started" << std::endl;
 }
@@ -156,8 +168,6 @@ void MainWindow::on_psu_conn_remoteLocalSwitch_clicked() {
 
 // CUSTOM COMMANDS
 void MainWindow::on_customCommandSendButton_clicked() {
-    // get command from input
-
     if (ui->customCommandInput->text().isEmpty()) return;
 
     std::string command = ui->customCommandInput->text().trimmed().toStdString();

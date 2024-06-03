@@ -58,8 +58,8 @@ public:
       /* measVO = this->psu->measurePSUVoltage(); */
       /* measCU = this->psu->measurePSUCurrent(); */
 
-      measCU = QRandomGenerator::global()->bounded(0,172.0);
-      measVO = QRandomGenerator::global()->bounded(0,5.0);
+      measCU = QRandomGenerator::global()->bounded(0,172);
+      measVO = QRandomGenerator::global()->bounded(0,5);
 
       currLCD->display(measCU);
       voltLCD->display(measVO);

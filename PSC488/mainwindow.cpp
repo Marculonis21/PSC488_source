@@ -40,6 +40,15 @@ MainWindow::MainWindow(QWidget *parent)
 
   // setup plotting
   this->plot = new Plot(ui->plotPanel);
+
+  // PSU output buttons colors
+  ui->outputOnButton->setStyleSheet(QString("QPushButton:enabled{background-color: rgb(119,221,119);}"
+                                            "QPushButton:disabled{}"
+                                            "QPushButton:hover:!pressed{background-color: rgb(149, 221, 149);}"));
+
+  ui->outputOffButton->setStyleSheet(QString("QPushButton:enabled{background-color: rgb(255,105,97);}"
+                                             "QPushButton:disabled{}"
+                                             "QPushButton:hover:!pressed{background-color: rgb(255,135,127);}"));
 }
 
 MainWindow::~MainWindow() {}

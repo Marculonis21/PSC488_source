@@ -40,7 +40,7 @@
       <x>0</x>
       <y>0</y>
       <width>702</width>
-      <height>600</height>
+      <height>681</height>
      </rect>
     </property>
     <property name="font">
@@ -64,7 +64,7 @@
      <enum>QTabWidget::Triangular</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="iconSize">
      <size>
@@ -104,9 +104,9 @@
       <property name="geometry">
        <rect>
         <x>560</x>
-        <y>480</y>
+        <y>470</y>
         <width>111</width>
-        <height>41</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -151,7 +151,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>450</y>
+        <y>440</y>
         <width>111</width>
         <height>30</height>
        </rect>
@@ -236,9 +236,9 @@
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>480</y>
+        <y>470</y>
         <width>111</width>
-        <height>41</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -323,7 +323,7 @@ padding-right: 5px;
       <property name="geometry">
        <rect>
         <x>430</x>
-        <y>450</y>
+        <y>440</y>
         <width>241</width>
         <height>31</height>
        </rect>
@@ -420,9 +420,9 @@ padding-right: 5px;
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>480</y>
+        <y>470</y>
         <width>111</width>
-        <height>41</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -499,15 +499,16 @@ padding-right: 5px;
       <property name="geometry">
        <rect>
         <x>300</x>
-        <y>470</y>
+        <y>465</y>
         <width>101</width>
-        <height>61</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Segoe UI Emoji</family>
         <pointsize>18</pointsize>
+        <stylestrategy>PreferDefault</stylestrategy>
        </font>
       </property>
       <property name="text">
@@ -579,8 +580,8 @@ padding-right: 5px;
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>410</y>
+        <x>0</x>
+        <y>400</y>
         <width>151</width>
         <height>41</height>
        </rect>
@@ -588,8 +589,9 @@ padding-right: 5px;
       <property name="font">
        <font>
         <family>Segoe UI Emoji</family>
-        <pointsize>20</pointsize>
+        <pointsize>18</pointsize>
         <bold>false</bold>
+        <stylestrategy>PreferDefault</stylestrategy>
        </font>
       </property>
       <property name="autoFillBackground">
@@ -618,7 +620,7 @@ padding-right: 5px;
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>450</y>
+        <y>440</y>
         <width>111</width>
         <height>30</height>
        </rect>
@@ -668,9 +670,9 @@ padding-right: 5px;
       <property name="geometry">
        <rect>
         <x>430</x>
-        <y>480</y>
+        <y>470</y>
         <width>111</width>
-        <height>41</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -721,6 +723,97 @@ padding-right: 5px;
        <string>Draw Test</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>95</x>
+        <y>518</y>
+        <width>111</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI Emoji</family>
+        <pointsize>14</pointsize>
+        <bold>false</bold>
+        <kerning>false</kerning>
+       </font>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(30,30,30);</string>
+      </property>
+      <property name="inputMethodHints">
+       <set>Qt::ImhNone</set>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="text">
+       <string>PSU Output</string>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::NoTextInteraction</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="outputOnButton">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>522</y>
+        <width>101</width>
+        <height>34</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI Emoji</family>
+        <pointsize>16</pointsize>
+        <stylestrategy>PreferDefault</stylestrategy>
+       </font>
+      </property>
+      <property name="text">
+       <string>Turn ON</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="outputOffButton">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>522</y>
+        <width>101</width>
+        <height>34</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI Emoji</family>
+        <pointsize>16</pointsize>
+        <stylestrategy>PreferDefault</stylestrategy>
+       </font>
+      </property>
+      <property name="text">
+       <string>Turn OFF</string>
+      </property>
+     </widget>
      <zorder>monitorVolts</zorder>
      <zorder>voltageShow</zorder>
      <zorder>label_4</zorder>
@@ -737,6 +830,9 @@ padding-right: 5px;
      <zorder>label_5</zorder>
      <zorder>currentShow</zorder>
      <zorder>drawTestButton</zorder>
+     <zorder>label_8</zorder>
+     <zorder>outputOnButton</zorder>
+     <zorder>outputOffButton</zorder>
     </widget>
     <widget class="QWidget" name="PSU_Connection">
      <property name="contextMenuPolicy">

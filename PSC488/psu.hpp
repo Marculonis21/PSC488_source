@@ -25,6 +25,9 @@ public:
     void powerSwitch();
     void remoteSwitch();
 
+    void setCurrent(double current);
+    void setVoltage(double voltage);
+
     void checkHealth();
     bool isConnected();
     bool isTurnedOn();

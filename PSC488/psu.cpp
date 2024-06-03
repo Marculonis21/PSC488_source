@@ -1,4 +1,5 @@
 #include "psu.hpp"
+#include <string>
 
 Psu::Psu(QTextBrowser *textBrowser)
 {
@@ -65,6 +66,14 @@ void Psu::remoteSwitch()
     }
 
     remote = !remote;
+}
+
+void Psu::setCurrent(double current) {
+    this->set("SO:CU", std::to_string(current));
+}
+
+void Psu::setVoltage(double voltage) {
+    this->set("SO:VO", std::to_string(voltage));
 }
 
 QString Psu::query(const std::string &query)

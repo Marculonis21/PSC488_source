@@ -18,11 +18,12 @@ QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+    Q_OBJECT;
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
 
 private:
     std::unique_ptr<Ui::MainWindow> ui;
@@ -34,12 +35,15 @@ private:
 
     void refreshPorts();
 
-    // WHEN ADDING NEW UI SIGNALS - the slots from ui editor seem to be not working properly, so just add the correct function here and it works just fine!
+// WHEN ADDING NEW UI SIGNALS - the slots from ui editor seem to be not working properly, so just add the correct function here and it works just fine!
 private slots:
     void on_currentEdit_textChanged(const QString &text);
     void on_voltageCombo_currentIndexChanged(int index);
 
     void on_setButton_clicked();
+    void on_outputOffButton_clicked();
+    void on_outputOnButton_clicked();
+
     void on_psu_conn_connect_clicked();
     void on_psu_conn_checkHealth_clicked();
     void on_psu_conn_help_clicked();

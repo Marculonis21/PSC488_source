@@ -1,5 +1,5 @@
 #include "mainwindow.hpp"
-
+        
 #include <QApplication>
 #include <qapplication.h>
 #include <qcoreapplication.h>

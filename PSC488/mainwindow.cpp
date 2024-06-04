@@ -43,18 +43,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     // PSU output buttons colors
     ui->outputOnButton->setStyleSheet(QString(
-                "QPushButton:enabled{background-color: rgb(119,221,119);}"
-                "QPushButton:disabled{}"
-                "QPushButton:hover:!pressed{background-color: rgb(149, 221, 149);}"));
+        "QPushButton:enabled{background-color: rgb(119,221,119);}"
+        "QPushButton:disabled{}"
+        "QPushButton:hover:!pressed{background-color: rgb(149, 221, 149);}"));
 
     ui->outputOffButton->setStyleSheet(QString(
-                "QPushButton:enabled{background-color: rgb(255,105,97);}"
-                "QPushButton:disabled{}"
-                "QPushButton:hover:!pressed{background-color: rgb(255,135,127);}"));
+        "QPushButton:enabled{background-color: rgb(255,105,97);}"
+        "QPushButton:disabled{}"
+        "QPushButton:hover:!pressed{background-color: rgb(255,135,127);}"));
 
     ui->outputOnButton->setEnabled(false);
     ui->outputOffButton->setEnabled(false);
-    ui->setButton->setEnabled(false);
+    /* ui->setButton->setEnabled(false); */
 }
 
 MainWindow::~MainWindow() {}
@@ -70,6 +70,9 @@ void MainWindow::refreshPorts() {
 void MainWindow::on_refreshButton_clicked() { refreshPorts(); }
 
 void MainWindow::plottingDone() {
+    /* delete plottingThread; */
+    /* this->plottingThread = nullptr; */
+
     delete liveMeasThread;
     this->liveMeasThread = nullptr;
 }
@@ -78,26 +81,19 @@ void MainWindow::on_drawTestButton_clicked() {
     std::cout << "hey2" << std::endl;
     /* this->plot->draw(); */
 
-    if (plottingThread) {
-        return;
-    }
-
     if (liveMeasThread) {
         liveMeasThread->running = false;
         return;
     }
+    this->liveMeasThread = new LiveMeasurementThread(this->plot, this->psu.get(), ui->monitorAmps, ui->monitorVolts);
+    connect(liveMeasThread, &LiveMeasurementThread::resultReady, this, &MainWindow::plottingDone);
+    liveMeasThread->start();
 
-    /* this->plottingThread = new PlottingTestThread(this->plot); */
-    this->liveMeasThread = new LiveMeasurementThread(
-            this->plot, this->psu.get(), ui->monitorAmps, ui->monitorVolts);
-
-    /* connect(plottingThread, &PlottingTestThread::resultReady, this, */
-    /*         &MainWindow::plottingDone); */
+    /* if (plottingThread) return; */
+    /* this->plottingThread = new PlottingTestThread(this->plot, ui->monitorAmps, ui->monitorVolts); */
+    /* connect(plottingThread, &PlottingTestThread::resultReady, this, &MainWindow::plottingDone); */
     /* plottingThread->start(); */
 
-    connect(liveMeasThread, &LiveMeasurementThread::resultReady, this,
-            &MainWindow::plottingDone);
-    liveMeasThread->start();
 
     std::cout << "Thread started" << std::endl;
 }
@@ -108,8 +104,7 @@ void MainWindow::on_currentEdit_textChanged(const QString &text) {
     double value = text.toDouble();
     int index = ui->voltageCombo->currentIndex();
 
-    QStandardItemModel *comboModel =
-        qobject_cast<QStandardItemModel *>(ui->voltageCombo->model());
+    QStandardItemModel *comboModel = qobject_cast<QStandardItemModel *>(ui->voltageCombo->model());
     comboModel->item(0)->setEnabled(true);
     comboModel->item(1)->setEnabled(value <= topLimit);
     comboModel->item(2)->setEnabled(value <= midLimit);
@@ -133,26 +128,32 @@ void MainWindow::on_setButton_clicked() {
     ui->currentShow->setText(ui->currentEdit->text());
     ui->voltageShow->setText(ui->voltageCombo->currentText());
 
-    double current = ui->currentEdit->text().toDouble();
-    double voltage = ui->voltageCombo->currentText().chopped(1).toDouble();
+    bool cOk, vOk;
+    double current = ui->currentEdit->text().toDouble(&cOk);
+    double voltage = ui->voltageCombo->currentText().chopped(1).toDouble(&vOk);
+
+    if (!cOk || !vOk) {
+        printf("Problem while parsing out current/voltage values from input "
+               "(SET STOPPED) - %f, %f\n", current, voltage);
+        return;
+    }
+
+
     printf("%f, %f\n", current, voltage);
 
-    psu->setVoltage(voltage);
-    QThread::msleep(500);
-    psu->setCurrent(current);
-}
+/*     psu->setVoltage(voltage); */
+/*     QThread::msleep(500); */
+/*     psu->setCurrent(current); */
 
+    plot->setLimit(current);
+}
 
 // YES IT IS CORRECT (famous last words...)
 //
 // RSD OFF - disables RSD -> enables output
 // RSD ON  - enables RSD  -> disables output
-void MainWindow::on_outputOnButton_clicked() {
-    psu->set("SO:FU:RSD", "OFF");
-}
-void MainWindow::on_outputOffButton_clicked() {
-    psu->set("SO:FU:RSD", "ON"); 
-}
+void MainWindow::on_outputOnButton_clicked() { psu->set("SO:FU:RSD", "OFF"); }
+void MainWindow::on_outputOffButton_clicked() { psu->set("SO:FU:RSD", "ON"); }
 
 // PSU CONNECTION
 void MainWindow::on_psu_conn_connect_clicked() {
@@ -169,24 +170,12 @@ void MainWindow::on_psu_conn_checkHealth_clicked() { psu->checkHealth(); }
 void MainWindow::on_psu_conn_help_clicked() { auto out = psu->query("HELP"); }
 
 // PSU MEASUREMENTS
-void MainWindow::on_psu_meas_sourceVolt_clicked() {
-    auto out = psu->query("SO:VO");
-}
-void MainWindow::on_psu_meas_measureVolt_clicked() {
-    auto out = psu->query("ME:VO");
-}
-void MainWindow::on_psu_meas_sourceCurr_clicked() {
-    auto out = psu->query("SO:CU");
-}
-void MainWindow::on_psu_meas_measureCurr_clicked() {
-    auto out = psu->query("ME:CU");
-}
-void MainWindow::on_psu_meas_maxVolt_clicked() {
-    auto out = psu->query("SO:VO:MA");
-}
-void MainWindow::on_psu_meas_maxCurr_clicked() {
-    auto out = psu->query("SO:CU:MA");
-}
+void MainWindow::on_psu_meas_sourceVolt_clicked()  { auto out = psu->query("SO:VO"); }
+void MainWindow::on_psu_meas_measureVolt_clicked() { auto out = psu->query("ME:VO"); }
+void MainWindow::on_psu_meas_sourceCurr_clicked()  { auto out = psu->query("SO:CU"); }
+void MainWindow::on_psu_meas_measureCurr_clicked() { auto out = psu->query("ME:CU"); }
+void MainWindow::on_psu_meas_maxVolt_clicked() { auto out = psu->query("SO:VO:MA"); }
+void MainWindow::on_psu_meas_maxCurr_clicked() { auto out = psu->query("SO:CU:MA"); }
 
 // PSU ON OFF FUNCS
 void MainWindow::on_psu_psu_funcOutputQ_clicked() {
@@ -215,11 +204,11 @@ void MainWindow::on_psu_conn_remoteLocalSwitch_clicked() {
 
 // CUSTOM COMMANDS
 void MainWindow::on_customCommandSendButton_clicked() {
-    if (ui->customCommandInput->text().isEmpty())
-        return;
+    if (ui->customCommandInput->text().isEmpty()) return;
 
     std::string command = ui->customCommandInput->text().trimmed().toStdString();
     ui->customCommandInput->clear();
 
     psu->set(command);
 }
+

@@ -7,25 +7,41 @@
 #include "qthread.h"
 #include "ui_mainwindow.h"
 #include <qlcdnumber.h>
+#include <qobjectdefs.h>
 #include <qrandom.h>
 
 class PlottingTestThread : public QThread {
   Q_OBJECT;
 
   Plot *plot;
-
+  QLCDNumber *currLCD;
+  QLCDNumber *voltLCD;
 public:
-  PlottingTestThread(Plot *plot) {
+  PlottingTestThread(Plot *plot, QLCDNumber *currLCD, QLCDNumber *voltLCD) {
     this->plot = plot;
+    this->currLCD = currLCD;
+    this->voltLCD = voltLCD;
+
+    connect(this, &PlottingTestThread::plotRedraw, plot, &Plot::redraw);
   }
 
   void run() override { 
-    plot->drawTest();
+    plot->clear();
+
+    for (int i = 0; i < 1000; ++i) {
+        plot->appendData({static_cast<double>(i)}, {static_cast<double>(i)});
+        /* plot->redraw(); */
+        currLCD->display(i);
+        voltLCD->display(i);
+        emit plotRedraw();
+        QThread::msleep(10);
+    }
 
     emit resultReady(); 
   }
 signals:
   void resultReady();
+  void plotRedraw();
 };
 
 class LiveMeasurementThread : public QThread {
@@ -46,6 +62,8 @@ public:
     this->voltLCD = voltLCD;
     this->plot->clear();
     running = true;
+
+    connect(this, &LiveMeasurementThread::plotRedraw, plot, &Plot::redraw);
   }
 
   void run() override { 
@@ -67,17 +85,18 @@ public:
       plot->appendData({(double)entryID}, 
                        {measCU});
 
-      plot->redraw();
-
+      emit plotRedraw();
       entryID++;
 
-      QThread::msleep(250);
+      QThread::msleep(25);
     }
 
     emit resultReady(); 
   }
+
 signals:
   void resultReady();
+  void plotRedraw();
 };
 
 /* class Worker : public QObject { */

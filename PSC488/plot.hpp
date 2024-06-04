@@ -11,6 +11,8 @@ public:
     Plot(QCustomPlot *plot);
     virtual ~Plot() { 
         delete dataGraph;
+
+        delete customLimitLine;
         delete line1;
         delete line2;
         delete line3;
@@ -18,7 +20,7 @@ public:
 
     void placeData(QVector<double> &&x, QVector<double> &&y);
     void appendData(const QVector<double> &x, const QVector<double> &y);
-    void redraw();
+    void setLimit(double limit);
     void drawTest();
     void clear();
 
@@ -27,8 +29,10 @@ private:
     QVector<double> yData;
 
     QCustomPlot *plot;
+
     QCPGraph *dataGraph;
 
+    QCPItemLine *customLimitLine = nullptr; 
     QCPItemLine *line1; 
     QCPItemLine *line2;
     QCPItemLine *line3;
@@ -38,6 +42,9 @@ private:
 private slots:
     void rangeX(QCPRange newRange);
     void rangeY(QCPRange newRange);
+
+public slots:
+    void redraw();
 };
 
 #endif

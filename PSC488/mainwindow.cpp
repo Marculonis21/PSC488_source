@@ -29,7 +29,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->baudCombo->setCurrentIndex(2);
     ui->baudCombo->setEnabled(false);
 
-    ui->currentEdit->setValidator(new QDoubleValidator(0.0, 200.0, 2));
+    QDoubleValidator *currentValidator = new QDoubleValidator(ui->currentEdit);
+    currentValidator->setBottom(0);
+    currentValidator->setTop(topLimit);
+    currentValidator->setNotation(QDoubleValidator::StandardNotation);
+    ui->currentEdit->setValidator(currentValidator);
 
     this->psu = std::make_unique<Psu>(ui->textBrowser);
 
@@ -54,7 +58,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->outputOnButton->setEnabled(false);
     ui->outputOffButton->setEnabled(false);
-    /* ui->setButton->setEnabled(false); */
+    ui->setButton->setEnabled(false);
 }
 
 MainWindow::~MainWindow() {}
@@ -78,8 +82,6 @@ void MainWindow::plottingDone() {
 }
 
 void MainWindow::on_drawTestButton_clicked() {
-    std::cout << "hey2" << std::endl;
-    /* this->plot->draw(); */
 
     if (liveMeasThread) {
         liveMeasThread->running = false;
@@ -94,7 +96,6 @@ void MainWindow::on_drawTestButton_clicked() {
     /* connect(plottingThread, &PlottingTestThread::resultReady, this, &MainWindow::plottingDone); */
     /* plottingThread->start(); */
 
-
     std::cout << "Thread started" << std::endl;
 }
 
@@ -102,6 +103,17 @@ void MainWindow::on_currentEdit_textChanged(const QString &text) {
     std::cout << "current edit change: " << text.toStdString() << std::endl;
 
     double value = text.toDouble();
+
+    // because validator seems to be working weirldy
+    if (value < 0) {
+        value = 0;
+        ui->currentEdit->setText(QString::number(0));
+    }
+    if (value > topLimit) {
+        value = topLimit;
+        ui->currentEdit->setText(QString::number(topLimit));
+    }
+
     int index = ui->voltageCombo->currentIndex();
 
     QStandardItemModel *comboModel = qobject_cast<QStandardItemModel *>(ui->voltageCombo->model());

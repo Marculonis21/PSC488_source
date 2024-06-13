@@ -80,7 +80,7 @@ Current Psu::measurePSUCurrent() {
 
     double result = response.toDouble(&ok);
     if (ok) {
-        this->measuredCurrent = result;
+        this->measuredCurrent = Current(result);
         return result;
     }
 
@@ -98,7 +98,7 @@ Voltage Psu::measurePSUVoltage() {
 
     double result = response.toDouble(&ok);
     if (ok) {
-        this->measuredVoltage = result;
+        this->measuredVoltage = Voltage(result);
         return result;
     }
 

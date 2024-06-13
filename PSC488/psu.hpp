@@ -14,7 +14,15 @@
 struct Voltage {
     Voltage() : value(0) {}
     Voltage(double voltage) : value(voltage) {}
-    Voltage& operator=(double& other) = delete; 
+
+    // get rid of those weird value assignments
+    template <typename T> 
+    Voltage& operator=(const T& other) = delete; 
+    Voltage& operator=(const Voltage& other) {
+        this->value = other.value;
+        return *this;
+    }; 
+
 
     /* Voltage(const Voltage &other) : value(other.value) {} */
     double operator()() const { return value; }
@@ -33,6 +41,13 @@ struct Current {
     Current() : value(0) {};
     Current(double current) : value(current) {}
     Current& operator=(double& other) = delete; 
+
+    template <typename T> 
+    Current& operator=(const T& other) = delete; 
+    Current& operator=(const Current& other) {
+        this->value = other.value;
+        return *this;
+    }; 
 
     double operator()() const { return value; }
     bool operator<(const Current &other) const { return value < other.value; }

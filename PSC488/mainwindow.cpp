@@ -5,6 +5,7 @@
 #include <QSerialPortInfo>
 #include <cstdio>
 #include <iostream>
+#include <memory>
 #include <qnamespace.h>
 #include <qobject.h>
 #include <qserialportinfo.h>
@@ -12,6 +13,7 @@
 #include <qthread.h>
 #include <qvalidator.h>
 #include <string>
+#include <utility>
 
 #include "psu.hpp"
 
@@ -43,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     refreshPorts();
 
     // setup plotting
-    this->plot = new Plot(ui->plotPanel);
+    plot = std::make_unique<Plot>(ui->plotPanel);
 
     // PSU output buttons colors
     ui->outputOnButton->setStyleSheet(QString(
@@ -74,11 +76,7 @@ void MainWindow::refreshPorts() {
 void MainWindow::on_refreshButton_clicked() { refreshPorts(); }
 
 void MainWindow::plottingDone() {
-    /* delete plottingThread; */
-    /* this->plottingThread = nullptr; */
-
-    delete liveMeasThread;
-    this->liveMeasThread = nullptr;
+    liveMeasThread.reset();
 }
 
 void MainWindow::on_drawTestButton_clicked() {
@@ -87,14 +85,9 @@ void MainWindow::on_drawTestButton_clicked() {
         liveMeasThread->running = false;
         return;
     }
-    this->liveMeasThread = new LiveMeasurementThread(this->plot, this->psu.get(), ui->monitorAmps, ui->monitorVolts);
-    connect(liveMeasThread, &LiveMeasurementThread::resultReady, this, &MainWindow::plottingDone);
+    liveMeasThread = std::make_unique<LiveMeasurementThread>(this->plot.get(), this->psu.get(), ui->monitorAmps, ui->monitorVolts);
+    connect(liveMeasThread.get(), &LiveMeasurementThread::resultReady, this, &MainWindow::plottingDone);
     liveMeasThread->start();
-
-    /* if (plottingThread) return; */
-    /* this->plottingThread = new PlottingTestThread(this->plot, ui->monitorAmps, ui->monitorVolts); */
-    /* connect(plottingThread, &PlottingTestThread::resultReady, this, &MainWindow::plottingDone); */
-    /* plottingThread->start(); */
 
     std::cout << "Thread started" << std::endl;
 }
@@ -150,12 +143,7 @@ void MainWindow::on_setButton_clicked() {
         return;
     }
 
-
     printf("%f, %f\n", current, voltage);
-
-/*     psu->setVoltage(voltage); */
-/*     QThread::msleep(500); */
-/*     psu->setCurrent(current); */
 
     plot->setLimit(current);
 }

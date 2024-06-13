@@ -10,6 +10,15 @@
 #include "psu.hpp"
 #include "threadWorker.hpp"
 
+struct TestValue {
+    TestValue(double value) : alpha(value) {}
+    double operator()() {return alpha;}
+
+    private:
+        double alpha;
+};
+
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class MainWindow;
@@ -29,9 +38,9 @@ private:
     std::unique_ptr<Ui::MainWindow> ui;
     std::unique_ptr<Psu> psu;
 
-    Plot *plot = nullptr;
-    PlottingTestThread *plottingThread = nullptr;
-    LiveMeasurementThread *liveMeasThread = nullptr;
+    std::unique_ptr<Plot> plot;
+    std::unique_ptr<LiveMeasurementThread> liveMeasThread; 
+    std::unique_ptr<PsuPowerThread> psuPowerThread; 
 
     void refreshPorts();
 

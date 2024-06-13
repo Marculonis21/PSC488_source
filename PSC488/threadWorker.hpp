@@ -10,108 +10,89 @@
 #include <qobjectdefs.h>
 #include <qrandom.h>
 
-class PlottingTestThread : public QThread {
-  Q_OBJECT;
+/* class PlottingTestThread : public QThread { */
+/*     Q_OBJECT; */
+/*   public: */
+/*     PlottingTestThread(Plot *plot, QLCDNumber *currLCD, QLCDNumber *voltLCD)
+ * { */
+/*         this->plot = plot; */
+/*         this->currLCD = currLCD; */
+/*         this->voltLCD = voltLCD; */
 
-  Plot *plot;
-  QLCDNumber *currLCD;
-  QLCDNumber *voltLCD;
-public:
-  PlottingTestThread(Plot *plot, QLCDNumber *currLCD, QLCDNumber *voltLCD) {
-    this->plot = plot;
-    this->currLCD = currLCD;
-    this->voltLCD = voltLCD;
+/*         connect(this, &PlottingTestThread::plotRedraw, plot, &Plot::redraw);
+ */
+/*     } */
 
-    connect(this, &PlottingTestThread::plotRedraw, plot, &Plot::redraw);
-  }
+/*     void run() override { */
+/*         plot->clear(); */
 
-  void run() override { 
-    plot->clear();
+/*         for (int i = 0; i < 1000; ++i) { */
+/*             plot->appendData({static_cast<double>(i)}, */
+/*                              {static_cast<double>(i)}); */
+/*             currLCD->display(i); */
+/*             voltLCD->display(i); */
+/*             emit plotRedraw(); */
+/*             QThread::msleep(10); */
+/*         } */
 
-    for (int i = 0; i < 1000; ++i) {
-        plot->appendData({static_cast<double>(i)}, {static_cast<double>(i)});
-        /* plot->redraw(); */
-        currLCD->display(i);
-        voltLCD->display(i);
-        emit plotRedraw();
-        QThread::msleep(10);
-    }
+/*         emit resultReady(); */
+/*     } */
 
-    emit resultReady(); 
-  }
-signals:
-  void resultReady();
-  void plotRedraw();
-};
+/*   private: */
+/*     Plot *plot; */
+/*     QLCDNumber *currLCD; */
+/*     QLCDNumber *voltLCD; */
 
-class LiveMeasurementThread : public QThread {
-  Q_OBJECT;
-
-  Plot *plot;
-  Psu *psu;
-  QLCDNumber *currLCD;
-  QLCDNumber *voltLCD;
-
-public:
-  bool running = true;
-
-  LiveMeasurementThread(Plot *plot, Psu *psu, QLCDNumber *currLCD, QLCDNumber *voltLCD) {
-    this->plot = plot;
-    this->psu = psu;
-    this->currLCD = currLCD;
-    this->voltLCD = voltLCD;
-    this->plot->clear();
-    running = true;
-
-    connect(this, &LiveMeasurementThread::plotRedraw, plot, &Plot::redraw);
-  }
-
-  void run() override { 
-    double measVO = 0;
-    double measCU = 0;
-
-    int entryID = 0;
-
-    while (running) {
-      /* measVO = this->psu->measurePSUVoltage(); */
-      /* measCU = this->psu->measurePSUCurrent(); */
-
-      measCU = QRandomGenerator::global()->bounded(0,172);
-      measVO = QRandomGenerator::global()->bounded(0,5);
-
-      currLCD->display(measCU);
-      voltLCD->display(measVO);
-
-      plot->appendData({(double)entryID}, 
-                       {measCU});
-
-      emit plotRedraw();
-      entryID++;
-
-      QThread::msleep(25);
-    }
-
-    emit resultReady(); 
-  }
-
-signals:
-  void resultReady();
-  void plotRedraw();
-};
-
-/* class Worker : public QObject { */
-/*   Q_OBJECT */
-/* public: */
-/*   Worker(Plot *plot); */
-/*   ~Worker(); */
-/* public slots: */
-/*   void process(); */
-/* signals: */
-/*   void finished(); */
-/*   void error(QString err); */
-
-/* private: */
-/*   Plot *plot; */
+/*   signals: */
+/*     void resultReady(); */
+/*     void plotRedraw(); */
 /* }; */
 
-#endif 
+class LiveMeasurementThread : public QThread {
+    Q_OBJECT;
+
+  public:
+    LiveMeasurementThread(Plot *plot, Psu *psu, QLCDNumber *currLCD,
+                          QLCDNumber *voltLCD);
+    void run() override;
+
+    bool running = true;
+
+  private:
+    Plot *plot;
+    Psu *psu;
+    QLCDNumber *currLCD;
+    QLCDNumber *voltLCD;
+
+  signals:
+    void resultReady();
+    void plotRedraw();
+};
+
+class PsuPowerThread : public QThread {
+    Q_OBJECT;
+
+  public:
+    PsuPowerThread(Psu *psu, Plot *plot, QLCDNumber *currLCD,
+                   QLCDNumber *voltLCD);
+
+    void run() override;
+    void changeTarget(Voltage voltage, Current current);
+
+  private:
+    Psu *psu;
+    Plot *plot;
+    QLCDNumber *currLCD;
+    QLCDNumber *voltLCD;
+
+    Voltage targetVoltage;
+    Current targetCurrent;
+
+    void setPsuTargets();
+
+  signals:
+    void resultReady();
+    void plotRedraw();
+};
+
+#endif

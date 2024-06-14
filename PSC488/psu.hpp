@@ -11,55 +11,37 @@
 #ifndef PSU_H
 #define PSU_H
 
-struct Voltage {
-    Voltage() : value(0) {}
-    Voltage(double voltage) : value(voltage) {}
+enum class FencedType { VOLTAGE, CURRENT, };
 
-    // get rid of those weird value assignments
-    template <typename T> 
-    Voltage& operator=(const T& other) = delete; 
-    Voltage& operator=(const Voltage& other) {
+template <FencedType X> 
+struct FencedValue {
+    FencedValue() : value(0) {}
+    FencedValue(double voltage) : value(voltage) {}
+
+    // get rid of those weird value copy assignments
+    template <typename T> FencedValue &operator=(const T &other) = delete;
+    FencedValue &operator=(const FencedValue &other) {
         this->value = other.value;
         return *this;
-    }; 
+    };
 
-
-    /* Voltage(const Voltage &other) : value(other.value) {} */
+    /* FencedValue(const FencedValue &other) : value(other.value) {} */
     double operator()() const { return value; }
-    bool operator<(const Voltage &other) const { return value < other.value; }
+    bool operator<(const FencedValue &other) const {
+        return value < other.value;
+    }
 
-    Voltage operator-(const Voltage &other) const { return Voltage(value - other.value); }
-    Voltage operator+(const Voltage &other) const { return Voltage(value + other.value); }
-    Voltage operator-(double num) const { return Voltage(value - num); }
-    Voltage operator+(double num) const { return Voltage(value + num); }
+    FencedValue operator-(const FencedValue &other) const { return FencedValue(value - other.value); }
+    FencedValue operator+(const FencedValue &other) const { return FencedValue(value + other.value); }
+    FencedValue operator-(double num) const { return FencedValue(value - num); }
+    FencedValue operator+(double num) const { return FencedValue(value + num); }
 
   private:
     double value;
 };
 
-struct Current {
-    Current() : value(0) {};
-    Current(double current) : value(current) {}
-    Current& operator=(double& other) = delete; 
-
-    template <typename T> 
-    Current& operator=(const T& other) = delete; 
-    Current& operator=(const Current& other) {
-        this->value = other.value;
-        return *this;
-    }; 
-
-    double operator()() const { return value; }
-    bool operator<(const Current &other) const { return value < other.value; }
-
-    Current operator-(const Current &other) const { return Current(value - other.value); }
-    Current operator+(const Current &other) const { return Current(value + other.value); }
-    Current operator-(double num) const { return Current(value - num); }
-    Current operator+(double num) const { return Current(value + num); }
-
-  private:
-    double value;
-};
+using Voltage = FencedValue<FencedType::VOLTAGE>;
+using Current = FencedValue<FencedType::CURRENT>;
 
 class Psu : public QObject {
     Q_OBJECT;

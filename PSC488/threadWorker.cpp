@@ -1,4 +1,5 @@
 #include "threadWorker.hpp"
+#include <string>
 LiveMeasurementThread::LiveMeasurementThread(Plot *plot, Psu *psu,
                                              QLCDNumber *currLCD,
                                              QLCDNumber *voltLCD) {
@@ -13,21 +14,21 @@ LiveMeasurementThread::LiveMeasurementThread(Plot *plot, Psu *psu,
 }
 
 void LiveMeasurementThread::run() {
-    double measVO = 0;
-    double measCU = 0;
+    Voltage measVO;
+    Current measCU;
 
     int entryID = 0;
 
     while (running) {
         /* measVO = this->psu->measurePSUVoltage(); */
         /* measCU = this->psu->measurePSUCurrent(); */
-        measCU = QRandomGenerator::global()->bounded(0, 172);
-        measVO = QRandomGenerator::global()->bounded(0, 5);
+        measCU = Current(QRandomGenerator::global()->bounded(0, 172));
+        measVO = Voltage(QRandomGenerator::global()->bounded(0, 5));
 
-        currLCD->display(measCU);
-        voltLCD->display(measVO);
+        currLCD->display(std::string(measCU).c_str());
+        voltLCD->display(std::string(measVO).c_str());
 
-        plot->appendData({(double)entryID}, {measCU});
+        plot->appendData({(double)entryID}, {std::stod(std::string(measCU))});
 
         emit plotRedraw();
         entryID++;

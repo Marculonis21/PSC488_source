@@ -63,13 +63,14 @@ void Psu::remoteSwitch() {
 void Psu::setCurrent(const Current current) {
     std::lock_guard guard(commLock);
 
-    set("SO:CU", std::to_string(current()));
+    // because of std::string() operator we don't need to cast to string
+    set("SO:CU", current); //
 }
 
 void Psu::setVoltage(const Voltage voltage) {
     std::lock_guard guard(commLock);
 
-    set("SO:VO", std::to_string(voltage()));
+    set("SO:VO", voltage);
 }
 
 Current Psu::measurePSUCurrent() {

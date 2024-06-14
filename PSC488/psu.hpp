@@ -15,26 +15,27 @@ enum class FencedType { VOLTAGE, CURRENT, };
 
 template <FencedType X> 
 struct FencedValue {
+
     FencedValue() : value(0) {}
-    FencedValue(double voltage) : value(voltage) {}
+    explicit FencedValue(double voltage) : value(voltage) {}
 
     // get rid of those weird value copy assignments
-    template <typename T> FencedValue &operator=(const T &other) = delete;
+    template <typename T> 
+    FencedValue &operator=(const T &other) = delete;
     FencedValue &operator=(const FencedValue &other) {
         this->value = other.value;
         return *this;
     };
 
-    /* FencedValue(const FencedValue &other) : value(other.value) {} */
-    double operator()() const { return value; }
-    bool operator<(const FencedValue &other) const {
-        return value < other.value;
-    }
+    bool operator<(const FencedValue &other) const { return value < other.value; }
 
     FencedValue operator-(const FencedValue &other) const { return FencedValue(value - other.value); }
     FencedValue operator+(const FencedValue &other) const { return FencedValue(value + other.value); }
     FencedValue operator-(double num) const { return FencedValue(value - num); }
     FencedValue operator+(double num) const { return FencedValue(value + num); }
+
+    // conversion operator
+    operator std::string() const { return std::to_string(value); }
 
   private:
     double value;

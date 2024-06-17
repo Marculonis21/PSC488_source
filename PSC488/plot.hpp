@@ -2,6 +2,7 @@
 #define PLOT_H
 
 #include "qcustomplot.h"
+#include "psu.hpp"
 #include <qvector.h>
 class Plot : public QObject
 {
@@ -20,7 +21,7 @@ public:
 
     void placeData(QVector<double> &&x, QVector<double> &&y);
     void appendData(const QVector<double> &x, const QVector<double> &y);
-    void setLimit(double limit);
+    void setLimit(const Current limit);
     void drawTest();
     void clear();
 

@@ -71,7 +71,8 @@ private slots:
     void on_drawTestButton_clicked();
     void on_customCommandSendButton_clicked();
 
-    void plottingDone();
+    void liveMeasThreadDone();
+    void psuPowerThreadDone();
 };
 
 #endif // MAINWINDOW_H

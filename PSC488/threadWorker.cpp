@@ -36,39 +36,43 @@ void LiveMeasurementThread::run() {
         QThread::msleep(25);
     }
 
-    emit resultReady();
+    emit endSignal();
 }
 
-PsuPowerThread::PsuPowerThread(Psu *psu, Plot *plot, QLCDNumber *currLCD,
-                               QLCDNumber *voltLCD) {
+void LiveMeasurementThread::stopPower() {
+    this->running = false;
+}
+
+PsuPowerThread::PsuPowerThread(Psu *psu) {
     this->psu = psu;
-    this->plot = plot;
-    this->plot->clear();
-
-    this->currLCD = currLCD;
-    this->voltLCD = voltLCD;
-
-    connect(this, &PsuPowerThread::plotRedraw, plot, &Plot::redraw);
 }
 
 void PsuPowerThread::run() {
+    const Voltage zero(0);
+
     Voltage measVO(0);
     Current measCU(0);
 
     setPsuTargets();
 
-    while (true) {
+    while (running) {
         measVO = psu->getLastVoltage();
         measCU = psu->getLastCurrent();
 
         if (targetCurrent - 0.001 < measCU) {
-            psu->setVoltage(0.0);
+            psu->setVoltage(zero);
+        }
+        else {
+            psu->setVoltage(targetVoltage);
         }
 
-        QThread::msleep(250);
+        QThread::msleep(500);
     }
 
-    emit resultReady();
+    psu->setVoltage(Voltage(0));
+    psu->setCurrent(Current(0));
+
+    emit endSignal();
 }
 
 void PsuPowerThread::changeTarget(Voltage voltage, Current current) {
@@ -80,4 +84,8 @@ void PsuPowerThread::changeTarget(Voltage voltage, Current current) {
 void PsuPowerThread::setPsuTargets() {
     psu->setVoltage(targetVoltage);
     psu->setCurrent(targetCurrent);
+}
+
+void PsuPowerThread::stopPower() {
+    this->running = false;
 }

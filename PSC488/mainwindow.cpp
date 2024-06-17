@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->outputOnButton->setEnabled(false);
     ui->outputOffButton->setEnabled(false);
-    ui->setButton->setEnabled(false);
+    ui->setButton->setEnabled(true);
 }
 
 MainWindow::~MainWindow() {}
@@ -75,8 +75,12 @@ void MainWindow::refreshPorts() {
 
 void MainWindow::on_refreshButton_clicked() { refreshPorts(); }
 
-void MainWindow::plottingDone() {
+void MainWindow::liveMeasThreadDone() {
     liveMeasThread.reset();
+}
+
+void MainWindow::psuPowerThreadDone() {
+    psuPowerThread.reset();
 }
 
 void MainWindow::on_drawTestButton_clicked() {
@@ -86,10 +90,10 @@ void MainWindow::on_drawTestButton_clicked() {
         return;
     }
     liveMeasThread = std::make_unique<LiveMeasurementThread>(this->plot.get(), this->psu.get(), ui->monitorAmps, ui->monitorVolts);
-    connect(liveMeasThread.get(), &LiveMeasurementThread::resultReady, this, &MainWindow::plottingDone);
+    connect(liveMeasThread.get(), &LiveMeasurementThread::endSignal, this, &MainWindow::liveMeasThreadDone);
     liveMeasThread->start();
 
-    std::cout << "Thread started" << std::endl;
+    std::cout << "Thread started - liveMeasThread" << std::endl;
 }
 
 void MainWindow::on_currentEdit_textChanged(const QString &text) {
@@ -134,18 +138,31 @@ void MainWindow::on_setButton_clicked() {
     ui->voltageShow->setText(ui->voltageCombo->currentText());
 
     bool cOk, vOk;
-    double current = ui->currentEdit->text().toDouble(&cOk);
-    double voltage = ui->voltageCombo->currentText().chopped(1).toDouble(&vOk);
+    Current current(ui->currentEdit->text().toDouble(&cOk));
+    Voltage voltage(ui->voltageCombo->currentText().chopped(1).toDouble(&vOk));
 
     if (!cOk || !vOk) {
         printf("Problem while parsing out current/voltage values from input "
-               "(SET STOPPED) - %f, %f\n", current, voltage);
+               "(SET STOPPED) - %f, %f\n", std::stod(current), std::stod(voltage));
         return;
     }
 
-    printf("%f, %f\n", current, voltage);
+    printf("%f, %f\n", std::stod(current), std::stod(voltage));
 
     plot->setLimit(current);
+
+    if (psuPowerThread) {
+        psuPowerThread->changeTarget(voltage, current);
+        return;
+    }
+
+    psuPowerThread = std::make_unique<PsuPowerThread>(psu.get());
+    connect(psuPowerThread.get(), &PsuPowerThread::endSignal, this, &MainWindow::psuPowerThreadDone);
+
+    psuPowerThread->changeTarget(voltage,current);
+    psuPowerThread->start();
+
+    std::cout << "Thread started - psuPowerThread" << std::endl;
 }
 
 // YES IT IS CORRECT (famous last words...)
@@ -211,4 +228,3 @@ void MainWindow::on_customCommandSendButton_clicked() {
 
     psu->set(command);
 }
-

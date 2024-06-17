@@ -11,13 +11,22 @@
 #ifndef PSU_H
 #define PSU_H
 
+class CommException : public std::exception {
+  public:
+    CommException(std::string msg) : message(msg) {}
+    const char *what() const throw() { return message.c_str(); }
+
+  private:
+    std::string message;
+};
+
 enum class FencedType { VOLTAGE, CURRENT, };
 
 template <FencedType X> 
 struct FencedValue {
 
     FencedValue() : value(0) {}
-    explicit FencedValue(double voltage) : value(voltage) {}
+    explicit FencedValue(double value) : value(value) {}
 
     // get rid of those weird value copy assignments
     template <typename T> 
@@ -79,6 +88,9 @@ class Psu : public QObject {
 
     Voltage measuredVoltage;
     Current measuredCurrent;
+
+    Voltage psuVoltage;
+    Current psuCurrent;
 
     QSerialPort *port;
     QTextBrowser *textBrowser;

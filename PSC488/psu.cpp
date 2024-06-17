@@ -82,13 +82,10 @@ Current Psu::measurePSUCurrent() {
     double result = response.toDouble(&ok);
     if (ok) {
         this->measuredCurrent = Current(result);
-        return result;
+        return measuredCurrent;
     }
 
-    textBrowser->insertPlainText(
-        QString("Current measurement conversion failed - output %1\n")
-            .arg(response));
-    return -1;
+    throw CommException("Current measurement conversion failed - output " + response.toStdString());
 }
 
 Voltage Psu::measurePSUVoltage() {
@@ -100,13 +97,10 @@ Voltage Psu::measurePSUVoltage() {
     double result = response.toDouble(&ok);
     if (ok) {
         this->measuredVoltage = Voltage(result);
-        return result;
+        return measuredVoltage;
     }
 
-    textBrowser->insertPlainText(
-        QString("Voltage measurement conversion failed - output %1\n")
-            .arg(response));
-    return -1;
+    throw CommException("Voltage measurement conversion failed - output " + response.toStdString());
 }
 
 QString Psu::query(const std::string &query) {

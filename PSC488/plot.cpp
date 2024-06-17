@@ -37,13 +37,13 @@ Plot::Plot(QCustomPlot *plot) {
     clear();
 }
 
-void Plot::setLimit(double limit) {
+void Plot::setLimit(const Current limit) {
     if (customLimitLine == nullptr) {
         customLimitLine = new QCPItemLine(this->plot);
     }
 
-    customLimitLine->start->setCoords(0, limit);
-    customLimitLine->end->setCoords(plot->xAxis->range().upper, limit);
+    customLimitLine->start->setCoords(0, std::stod(limit));
+    customLimitLine->end->setCoords(plot->xAxis->range().upper, std::stod(limit));
 
     redraw();
 }
@@ -85,9 +85,9 @@ void Plot::rangeX(QCPRange newRange) {
     if (customLimitLine != nullptr) {
         customLimitLine->end->setCoords(newRange.upper+1, customLimitLine->end->coords().y());
     }
-    line1->end->setCoords(newRange.upper+1, line1->end->coords().y());
-    line2->end->setCoords(newRange.upper+1, line2->end->coords().y());
-    line3->end->setCoords(newRange.upper+1, line3->end->coords().y());
+    line1->end->setCoords(plot->xAxis->range().upper, line1->end->coords().y());
+    line2->end->setCoords(plot->xAxis->range().upper, line2->end->coords().y());
+    line3->end->setCoords(plot->xAxis->range().upper, line3->end->coords().y());
 }
 
 void Plot::rangeY(QCPRange newRange) {

@@ -55,8 +55,7 @@ class LiveMeasurementThread : public QThread {
     LiveMeasurementThread(Plot *plot, Psu *psu, QLCDNumber *currLCD,
                           QLCDNumber *voltLCD);
     void run() override;
-
-    bool running = true;
+    void stopPower();
 
   private:
     Plot *plot;
@@ -64,8 +63,10 @@ class LiveMeasurementThread : public QThread {
     QLCDNumber *currLCD;
     QLCDNumber *voltLCD;
 
+    bool running = true;
+
   signals:
-    void resultReady();
+    void endSignal();
     void plotRedraw();
 };
 
@@ -73,25 +74,24 @@ class PsuPowerThread : public QThread {
     Q_OBJECT;
 
   public:
-    PsuPowerThread(Psu *psu, Plot *plot, QLCDNumber *currLCD,
-                   QLCDNumber *voltLCD);
+    PsuPowerThread(Psu *psu);
 
     void run() override;
     void changeTarget(Voltage voltage, Current current);
+    void stopPower();
 
   private:
     Psu *psu;
-    Plot *plot;
-    QLCDNumber *currLCD;
-    QLCDNumber *voltLCD;
 
     Voltage targetVoltage;
     Current targetCurrent;
 
+    bool running = true;
+
     void setPsuTargets();
 
   signals:
-    void resultReady();
+    void endSignal();
     void plotRedraw();
 };
 

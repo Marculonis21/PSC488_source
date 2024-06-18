@@ -33,13 +33,13 @@ void LiveMeasurementThread::run() {
         emit plotRedraw();
         entryID++;
 
-        QThread::msleep(25);
+        QThread::msleep(100);
     }
 
     emit endSignal();
 }
 
-void LiveMeasurementThread::stopPower() {
+void LiveMeasurementThread::stopMeasurement() {
     this->running = false;
 }
 

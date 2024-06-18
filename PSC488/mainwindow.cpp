@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->outputOnButton->setEnabled(false);
     ui->outputOffButton->setEnabled(false);
-    ui->setButton->setEnabled(true);
+    ui->setButton->setEnabled(false);
 }
 
 MainWindow::~MainWindow() {}
@@ -86,7 +86,7 @@ void MainWindow::psuPowerThreadDone() {
 void MainWindow::on_drawTestButton_clicked() {
 
     if (liveMeasThread) {
-        liveMeasThread->running = false;
+        liveMeasThread->stopMeasurement();
         return;
     }
     liveMeasThread = std::make_unique<LiveMeasurementThread>(this->plot.get(), this->psu.get(), ui->monitorAmps, ui->monitorVolts);

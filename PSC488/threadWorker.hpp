@@ -55,7 +55,7 @@ class LiveMeasurementThread : public QThread {
     LiveMeasurementThread(Plot *plot, Psu *psu, QLCDNumber *currLCD,
                           QLCDNumber *voltLCD);
     void run() override;
-    void stopPower();
+    void stopMeasurement();
 
   private:
     Plot *plot;

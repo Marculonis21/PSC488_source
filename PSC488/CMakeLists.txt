@@ -46,6 +46,8 @@ else()
     endif()
 endif()
 
+target_link_options(PSC488 PRIVATE -fstack-protector)
+
 target_link_libraries(PSC488 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::PrintSupport 
     Qt${QT_VERSION_MAJOR}::SerialPort

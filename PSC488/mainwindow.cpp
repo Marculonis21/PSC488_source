@@ -89,8 +89,10 @@ void MainWindow::on_drawTestButton_clicked() {
         liveMeasThread->stopMeasurement();
         return;
     }
+
     liveMeasThread = std::make_unique<LiveMeasurementThread>(this->plot.get(), this->psu.get(), ui->monitorAmps, ui->monitorVolts);
     connect(liveMeasThread.get(), &LiveMeasurementThread::endSignal, this, &MainWindow::liveMeasThreadDone);
+
     liveMeasThread->start();
 
     std::cout << "Thread started - liveMeasThread" << std::endl;
@@ -156,10 +158,10 @@ void MainWindow::on_setButton_clicked() {
         return;
     }
 
-    psuPowerThread = std::make_unique<PsuPowerThread>(psu.get());
+    psuPowerThread = std::make_unique<PsuPowerThread>(this->psu.get(), voltage, current);
     connect(psuPowerThread.get(), &PsuPowerThread::endSignal, this, &MainWindow::psuPowerThreadDone);
 
-    psuPowerThread->changeTarget(voltage,current);
+    // psuPowerThread->changeTarget(voltage,current);
     psuPowerThread->start();
 
     std::cout << "Thread started - psuPowerThread" << std::endl;
@@ -169,8 +171,16 @@ void MainWindow::on_setButton_clicked() {
 //
 // RSD OFF - disables RSD -> enables output
 // RSD ON  - enables RSD  -> disables output
-void MainWindow::on_outputOnButton_clicked() { psu->set("SO:FU:RSD", "OFF"); }
-void MainWindow::on_outputOffButton_clicked() { psu->set("SO:FU:RSD", "ON"); }
+void MainWindow::on_outputOnButton_clicked() {
+    psu->powerSwitch();
+    ui->outputOnButton->setEnabled(false);
+    ui->outputOffButton->setEnabled(true);
+}
+void MainWindow::on_outputOffButton_clicked() {
+    psu->powerSwitch();
+    ui->outputOnButton->setEnabled(true);
+    ui->outputOffButton->setEnabled(false);
+}
 
 // PSU CONNECTION
 void MainWindow::on_psu_conn_connect_clicked() {
@@ -204,7 +214,11 @@ void MainWindow::on_psu_psu_funcOutputQ_clicked() {
         ui->textBrowser->insertPlainText("RSD disabled, output enabled\n");
 }
 
-void MainWindow::on_psu_psu_funcOutputSwitch_clicked() { psu->powerSwitch(); }
+void MainWindow::on_psu_psu_funcOutputSwitch_clicked() {
+    bool power = psu->powerSwitch();
+    ui->outputOnButton->setEnabled(!power);
+    ui->outputOffButton->setEnabled(power);
+}
 
 // PSU REMOTE/LOCAL
 void MainWindow::on_psu_conn_localQ_clicked() { psu->set("LOC"); }

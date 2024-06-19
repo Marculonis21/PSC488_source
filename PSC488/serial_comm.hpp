@@ -24,24 +24,33 @@ struct SerialComm
         }
         // clear wait response flag
         device->serialResponse.clear();
+        port->setRequestToSend(false);
 
         port->clear(QSerialPort::AllDirections);
 
-        port->setRequestToSend(false);
-
         std::cout << command << std::endl;
+
         port->write((command + "\n").data());
         port->flush();
-        while(port->bytesToWrite())
+        std::cout << "sending" << std::endl;
+
+        auto start = std::chrono::high_resolution_clock::now();
+        auto now = std::chrono::high_resolution_clock::now();
+        while(port->bytesToWrite() && std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count() < 100)
         {
-            QCoreApplication::processEvents(QEventLoop::ProcessEventsFlag::WaitForMoreEvents);
+            now = std::chrono::high_resolution_clock::now();
+            QCoreApplication::processEvents(QEventLoop::ProcessEventsFlag::AllEvents);
             QThread::msleep(10);
+            std::cout << "ss" << std::endl;
         }
+
+        std::cout << "sent" << std::endl;
 
         port->setRequestToSend(true);
 
         if (awaitResponse) return SerialComm::waitResponse(device);
         return "";
+
     }
 
     template<typename T>

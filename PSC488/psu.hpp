@@ -64,7 +64,7 @@ class Psu : public QObject {
     QString query(const std::string &query);
 
     void connect(const QString &com);
-    void powerSwitch();
+    bool powerSwitch();
     void remoteSwitch();
 
     void setCurrent(const Current current);
@@ -101,6 +101,11 @@ class Psu : public QObject {
 
   private slots:
     void serialReadyRead();
+
+  public slots:
+    void measureMe();
+    void setMeVoltage(Voltage voltage);
+    void setMeCurrent(Current current);
 };
 
 #endif

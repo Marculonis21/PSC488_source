@@ -68,13 +68,15 @@ class LiveMeasurementThread : public QThread {
   signals:
     void endSignal();
     void plotRedraw();
+    void measure();
+
 };
 
 class PsuPowerThread : public QThread {
     Q_OBJECT;
 
   public:
-    PsuPowerThread(Psu *psu);
+    PsuPowerThread(Psu *psu, Voltage targetVoltage, Current targetCurrent);
 
     void run() override;
     void changeTarget(Voltage voltage, Current current);
@@ -93,6 +95,8 @@ class PsuPowerThread : public QThread {
   signals:
     void endSignal();
     void plotRedraw();
+    void setVoltage(Voltage voltage);
+    void setCurrent(Current current);
 };
 
 #endif

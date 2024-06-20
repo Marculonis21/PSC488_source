@@ -1,5 +1,4 @@
 #include "psu.hpp"
-#include <mutex>
 #include <string>
 
 Psu::Psu(QTextBrowser *textBrowser) {
@@ -62,18 +61,28 @@ void Psu::remoteSwitch() {
 }
 
 void Psu::setCurrent(const Current current) {
-    std::lock_guard guard(commLock);
     std::cout << "steting current" << std::endl;
+
+    this->psuCurrent = current;
     // because of std::string() operator we don't need to cast to string
     set("SO:CU", current); //
 }
 
 void Psu::setVoltage(const Voltage voltage) {
-    std::lock_guard guard(commLock);
     std::cout << "steting voltage" << std::endl;
+
+    this->psuVoltage = voltage;
 
     set("SO:VO", voltage);
 }
+
+Current Psu::getPsuCurrentSettings() {
+    return this->psuCurrent;
+}
+Voltage Psu::getPsuVoltageSettings() {
+    return this->psuVoltage;
+}
+
 void Psu::measureMe() {
     try{
         measurePSUCurrent();
@@ -99,11 +108,9 @@ void Psu::setMeCurrent(Current current) {
 }
 
 Current Psu::measurePSUCurrent() {
-    std::lock_guard guard(commLock);
-
     bool ok = false;
     auto response = query("ME:CU");
-    // auto response = QString("10");
+
     double result = response.toDouble(&ok);
     if (ok) {
         this->measuredCurrent = Current(result);
@@ -114,8 +121,6 @@ Current Psu::measurePSUCurrent() {
 }
 
 Voltage Psu::measurePSUVoltage() {
-    std::lock_guard guard(commLock);
-
     bool ok = false;
     auto response = query("ME:VO");
 

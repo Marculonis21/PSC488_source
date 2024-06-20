@@ -21,21 +21,9 @@ void LiveMeasurementThread::run() {
     int entryID = 0;
 
     while (running) {
-        // try {
-        //     measVO = this->psu->measurePSUVoltage();
-        // }
-        // catch (CommException e) {
-        // }
-        // try {
-        //     measCU = this->psu->measurePSUCurrent();
-        // }
-        // catch (CommException e) {
-        // }
         emit measure();
         measVO = psu->getLastVoltage();
         measCU = psu->getLastCurrent();
-        // measCU = Current(QRandomGenerator::global()->bounded(0, 172));
-        // measVO = Voltage(QRandomGenerator::global()->bounded(0, 5));
 
         currLCD->display(std::string(measCU).c_str());
         voltLCD->display(std::string(measVO).c_str());
@@ -58,8 +46,8 @@ void LiveMeasurementThread::stopMeasurement() {
 PsuPowerThread::PsuPowerThread(Psu *psu, Voltage targetVoltage, Current targetCurrent) {
     this->psu = psu;
 
-    connect(this, &PsuPowerThread::setVoltage, psu, Psu::setMeVoltage);
-    connect(this, &PsuPowerThread::setCurrent, psu, Psu::setMeCurrent);
+    connect(this, &PsuPowerThread::setVoltage, psu, &Psu::setMeVoltage);
+    connect(this, &PsuPowerThread::setCurrent, psu, &Psu::setMeCurrent);
 
     this->targetVoltage = targetVoltage;
     this->targetCurrent = targetCurrent;

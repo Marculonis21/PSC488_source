@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(0);
 
-    ui->monitorAmps->display(173.20);
+    ui->monitorAmps->display(178.2);
     ui->monitorVolts->display(178.11);
 
     ui->baudCombo->setCurrentIndex(2);
@@ -85,17 +85,14 @@ void MainWindow::psuPowerThreadDone() {
 
 void MainWindow::on_drawTestButton_clicked() {
 
-    if (liveMeasThread) {
-        liveMeasThread->stopMeasurement();
+    if (psuWorker) {
+        psuWorker->stop();
+        psuWorker.reset();
         return;
     }
 
-    liveMeasThread = std::make_unique<LiveMeasurementThread>(this->plot.get(), this->psu.get(), ui->monitorAmps, ui->monitorVolts);
-    connect(liveMeasThread.get(), &LiveMeasurementThread::endSignal, this, &MainWindow::liveMeasThreadDone);
-
-    liveMeasThread->start();
-
-    std::cout << "Thread started - liveMeasThread" << std::endl;
+    psuWorker = std::make_unique<PsuWorker>(psu.get(), plot.get(), ui->monitorAmps, ui->monitorVolts);
+    psuWorker->run();
 }
 
 void MainWindow::on_currentEdit_textChanged(const QString &text) {

@@ -8,6 +8,7 @@
 
 #include "plot.hpp"
 #include "psu.hpp"
+#include "psuWorker.hpp"
 #include "threadWorker.hpp"
 
 struct TestValue {
@@ -37,10 +38,11 @@ public:
 private:
     std::unique_ptr<Ui::MainWindow> ui;
     std::unique_ptr<Psu> psu;
-
     std::unique_ptr<Plot> plot;
     std::unique_ptr<LiveMeasurementThread> liveMeasThread; 
     std::unique_ptr<PsuPowerThread> psuPowerThread; 
+
+    std::unique_ptr<PsuWorker> psuWorker;
 
     void refreshPorts();
 

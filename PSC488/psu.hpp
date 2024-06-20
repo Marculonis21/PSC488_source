@@ -2,11 +2,11 @@
 #include <QSerialPort>
 #include <exception>
 #include <memory>
-#include <mutex>
 #include <qobjectdefs.h>
 #include <qtextbrowser.h>
 #include <qwidget.h>
 #include <string>
+#include <sstream>
 
 #ifndef PSU_H
 #define PSU_H
@@ -37,6 +37,8 @@ struct FencedValue {
     };
 
     bool operator<(const FencedValue &other) const { return value < other.value; }
+    bool operator==(const FencedValue &other) const { return value == other.value; }
+    bool operator!=(const FencedValue &other) const { return value != other.value; }
 
     FencedValue operator-(const FencedValue &other) const { return FencedValue(value - other.value); }
     FencedValue operator+(const FencedValue &other) const { return FencedValue(value + other.value); }
@@ -44,7 +46,13 @@ struct FencedValue {
     FencedValue operator+(double num) const { return FencedValue(value + num); }
 
     // conversion operator
-    operator std::string() const { return std::to_string(value); }
+    operator std::string() const { 
+      /* return std::to_string(value); */ 
+      std::ostringstream out;
+      out.precision(3);
+      out << std::fixed << value;
+      return out.str();
+    }
 
   private:
     double value;
@@ -69,6 +77,8 @@ class Psu : public QObject {
 
     void setCurrent(const Current current);
     void setVoltage(const Voltage voltage);
+    Current getPsuCurrentSettings();
+    Voltage getPsuVoltageSettings();
 
     Voltage measurePSUVoltage();
     Current measurePSUCurrent();
@@ -84,8 +94,6 @@ class Psu : public QObject {
     friend class SerialComm;
 
   private:
-    std::mutex commLock;
-
     Voltage measuredVoltage;
     Current measuredCurrent;
 

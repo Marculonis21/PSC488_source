@@ -15,8 +15,6 @@
 #include <string>
 #include <utility>
 
-#include "psu.hpp"
-
 const double topLimit = 172.8;
 const double midLimit = 172.0;
 const double lowLimit = 170.0;

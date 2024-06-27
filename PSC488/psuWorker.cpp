@@ -30,9 +30,6 @@ void PsuWorker::runMeasurement() {
         return;
     }
 
-    // measVO = Voltage(1);
-    // measCU = Current(0.1);
-
     measVO = psu->measurePSUVoltage();
     measCU = psu->measurePSUCurrent();
 
@@ -43,7 +40,6 @@ void PsuWorker::runMeasurement() {
         psu->setVoltage(targetVoltage);
     }
 
-    psu->setCurrent(targetCurrent);
     runDataCollection();
 }
 
@@ -64,4 +60,7 @@ void PsuWorker::setTargets(Voltage tVoltage, Current tCurrent) {
     std::cout << "worker Targets set" << std::endl;
     this->targetVoltage = tVoltage*voltageMultiplier;
     this->targetCurrent = tCurrent*currentMultiplier;
+
+    psu->setVoltage(targetVoltage);
+    psu->setCurrent(targetCurrent);
 }

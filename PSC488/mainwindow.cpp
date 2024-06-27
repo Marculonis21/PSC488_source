@@ -14,6 +14,7 @@
 #include <qvalidator.h>
 #include <string>
 #include <utility>
+#include "psu.hpp"
 
 const double topLimit = 172.8;
 const double midLimit = 172.0;
@@ -151,8 +152,8 @@ void MainWindow::on_setButton_clicked() {
 
     if (psuWorker) {
         psuWorker->setTargets(voltage, current);
-        /* psuWorker->stop(); */
-        /* psuWorker.reset(); */
+        // psuWorker->stop();
+        // psuWorker.reset();
         return;
     }
 

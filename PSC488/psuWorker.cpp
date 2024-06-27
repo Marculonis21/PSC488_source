@@ -30,19 +30,20 @@ void PsuWorker::runMeasurement() {
         return;
     }
 
-    measVO = Voltage(1);
-    measCU = Current(0.1);
+    // measVO = Voltage(1);
+    // measCU = Current(0.1);
 
-    /* measVO = psu->measurePSUVoltage(); */
-    /* measCU = psu->measurePSUCurrent(); */
+    measVO = psu->measurePSUVoltage();
+    measCU = psu->measurePSUCurrent();
 
-    /* if (targetCurrent - 0.001 < measCU && psu->getPsuVoltageSettings() != zero) { */ 
-    /*     psu->setVoltage(zero); */
-    /* } */
-    /* else if (psu->getPsuVoltageSettings() != targetVoltage){ */
-    /*     psu->setVoltage(targetVoltage); */
-    /* } */
+    if (targetCurrent - 0.001 < measCU && psu->getPsuVoltageSettings() != zero) {
+        psu->setVoltage(zero);
+    }
+    else if (psu->getPsuVoltageSettings() != targetVoltage){
+        psu->setVoltage(targetVoltage);
+    }
 
+    psu->setCurrent(targetCurrent);
     runDataCollection();
 }
 
@@ -57,8 +58,8 @@ void PsuWorker::runDataCollection() {
     QTimer::singleShot(500, this, &PsuWorker::measure);
 }
 
-const double voltageMultiplier = 1;
-const double currentMultiplier = 1;
+const double voltageMultiplier = 1/1.9;
+const double currentMultiplier = 1/5.3;
 void PsuWorker::setTargets(Voltage tVoltage, Current tCurrent) {
     std::cout << "worker Targets set" << std::endl;
     this->targetVoltage = tVoltage*voltageMultiplier;

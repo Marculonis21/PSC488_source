@@ -27,7 +27,7 @@ class Psu : public QObject {
     Psu(QTextBrowser *textBrowser);
     virtual ~Psu();
 
-    void set(const std::string &command, const std::string &arg = "");
+    QString set(const std::string &command, const std::string &arg = "");
     QString query(const std::string &query);
 
     void connect(const QString &com);
@@ -65,6 +65,9 @@ class Psu : public QObject {
     bool power = false;
     bool remote = false;
     QString serialResponse;
+
+    Voltage _measurePSUVoltage();
+    Current _measurePSUCurrent();
 
   private slots:
     void serialReadyRead();

@@ -14,6 +14,7 @@ class PsuWorker : public QObject {
 
     void run();
     void stop();
+    void setTargets(Voltage tVoltage, Current tCurrent);
 
   private:
     Psu *psu;
@@ -32,7 +33,6 @@ class PsuWorker : public QObject {
     Voltage measVO;
     Current measCU;
     
-
   public slots:
     void runMeasurement();
     void runDataCollection();

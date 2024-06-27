@@ -21,24 +21,27 @@ void PsuWorker::stop() {
 
 void PsuWorker::run() {
     this->running = true;
-
     QTimer::singleShot(250, this, &PsuWorker::measure);
 }
 
 void PsuWorker::runMeasurement() {
-    if (running) {
+    if (!running) {
+        psu->setVoltage(zero);
         return;
     }
 
-    measVO = psu->measurePSUVoltage();
-    measCU = psu->measurePSUCurrent();
+    measVO = Voltage(1);
+    measCU = Current(0.1);
 
-    if (targetCurrent - 0.001 < measCU && psu->getPsuVoltageSettings() != zero) { 
-        psu->setVoltage(zero);
-    }
-    else if (psu->getPsuVoltageSettings() != targetVoltage){
-        psu->setVoltage(targetVoltage);
-    }
+    /* measVO = psu->measurePSUVoltage(); */
+    /* measCU = psu->measurePSUCurrent(); */
+
+    /* if (targetCurrent - 0.001 < measCU && psu->getPsuVoltageSettings() != zero) { */ 
+    /*     psu->setVoltage(zero); */
+    /* } */
+    /* else if (psu->getPsuVoltageSettings() != targetVoltage){ */
+    /*     psu->setVoltage(targetVoltage); */
+    /* } */
 
     runDataCollection();
 }
@@ -52,4 +55,10 @@ void PsuWorker::runDataCollection() {
     emit plotRedraw();
 
     QTimer::singleShot(500, this, &PsuWorker::measure);
+}
+
+void PsuWorker::setTargets(Voltage tVoltage, Current tCurrent) {
+    std::cout << "worker Targets set" << std::endl;
+    this->targetVoltage = tVoltage;
+    this->targetCurrent = tCurrent;
 }

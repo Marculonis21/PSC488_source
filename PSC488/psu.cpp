@@ -1,5 +1,4 @@
 #include "psu.hpp"
-#include <string>
 
 Psu::Psu(QTextBrowser *textBrowser) {
     this->port = new QSerialPort();
@@ -69,15 +68,13 @@ void Psu::setCurrent(const Current current) {
     std::cout << "steting current" << std::endl;
 
     this->psuCurrent = current;
-    // because of std::string() operator we don't need to cast to string
-    set("SO:CU", current); 
+    set("SO:CU", current); // because of std::string() operator we don't need to cast to string
 }
 
 void Psu::setVoltage(const Voltage voltage) {
     std::cout << "steting voltage" << std::endl;
 
     this->psuVoltage = voltage;
-
     set("SO:VO", voltage);
 }
 

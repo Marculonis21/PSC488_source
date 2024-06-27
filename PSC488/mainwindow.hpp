@@ -11,20 +11,11 @@
 #include "psuWorker.hpp"
 #include "threadWorker.hpp"
 
-struct TestValue {
-    TestValue(double value) : alpha(value) {}
-    double operator()() {return alpha;}
-
-    private:
-        double alpha;
-};
-
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class MainWindow;
 }
-QT_END_NAMESPACE
+QT_END_NAMESPACE;
 
 class MainWindow : public QMainWindow
 {
@@ -33,7 +24,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
 
 private:
     std::unique_ptr<Ui::MainWindow> ui;

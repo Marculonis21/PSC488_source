@@ -57,8 +57,10 @@ void PsuWorker::runDataCollection() {
     QTimer::singleShot(500, this, &PsuWorker::measure);
 }
 
+const double voltageMultiplier = 1;
+const double currentMultiplier = 1;
 void PsuWorker::setTargets(Voltage tVoltage, Current tCurrent) {
     std::cout << "worker Targets set" << std::endl;
-    this->targetVoltage = tVoltage;
-    this->targetCurrent = tCurrent;
+    this->targetVoltage = tVoltage*voltageMultiplier;
+    this->targetCurrent = tCurrent*currentMultiplier;
 }

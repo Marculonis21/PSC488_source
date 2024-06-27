@@ -32,19 +32,12 @@ struct SerialComm
 
         port->write((command + "\n").data());
         port->flush();
-        std::cout << "sending" << std::endl;
 
-        auto start = std::chrono::high_resolution_clock::now();
-        auto now = std::chrono::high_resolution_clock::now();
-        while(port->bytesToWrite() && std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count() < 100)
+        while(port->bytesToWrite())
         {
-            now = std::chrono::high_resolution_clock::now();
             QCoreApplication::processEvents(QEventLoop::ProcessEventsFlag::AllEvents);
             QThread::msleep(10);
-            std::cout << "ss" << std::endl;
         }
-
-        std::cout << "sent" << std::endl;
 
         port->setRequestToSend(true);
 

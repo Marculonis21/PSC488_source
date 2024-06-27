@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->outputOnButton->setEnabled(false);
     ui->outputOffButton->setEnabled(false);
-    ui->setButton->setEnabled(false);
+    ui->setButton->setEnabled(true);
 }
 
 MainWindow::~MainWindow() {}
@@ -85,14 +85,15 @@ void MainWindow::psuPowerThreadDone() {
 
 void MainWindow::on_drawTestButton_clicked() {
 
-    if (psuWorker) {
-        psuWorker->stop();
-        psuWorker.reset();
+    if (liveMeasThread) {
+        liveMeasThread->stopMeasurement();
         return;
     }
 
-    psuWorker = std::make_unique<PsuWorker>(psu.get(), plot.get(), ui->monitorAmps, ui->monitorVolts);
-    psuWorker->run();
+    liveMeasThread = std::make_unique<LiveMeasurementThread>(this->plot.get(), this->psu.get(), ui->monitorAmps, ui->monitorVolts);
+    connect(liveMeasThread.get(), &LiveMeasurementThread::endSignal, this, &MainWindow::liveMeasThreadDone);
+
+    liveMeasThread->start();
 }
 
 void MainWindow::on_currentEdit_textChanged(const QString &text) {
@@ -100,7 +101,7 @@ void MainWindow::on_currentEdit_textChanged(const QString &text) {
 
     double value = text.toDouble();
 
-    // because validator seems to be working weirldy
+    // because I don't understand when does validator event happen (this is safer)
     if (value < 0) {
         value = 0;
         ui->currentEdit->setText(QString::number(0));
@@ -150,18 +151,18 @@ void MainWindow::on_setButton_clicked() {
 
     plot->setLimit(current);
 
-    if (psuPowerThread) {
-        psuPowerThread->changeTarget(voltage, current);
+    if (psuWorker) {
+        psuWorker->setTargets(voltage, current);
+        /* psuWorker->stop(); */
+        /* psuWorker.reset(); */
         return;
     }
 
-    psuPowerThread = std::make_unique<PsuPowerThread>(this->psu.get(), voltage, current);
-    connect(psuPowerThread.get(), &PsuPowerThread::endSignal, this, &MainWindow::psuPowerThreadDone);
+    psuWorker = std::make_unique<PsuWorker>(psu.get(), plot.get(), ui->monitorAmps, ui->monitorVolts);
+    psuWorker->setTargets(voltage, current);
+    psuWorker->run();
 
-    // psuPowerThread->changeTarget(voltage,current);
-    psuPowerThread->start();
-
-    std::cout << "Thread started - psuPowerThread" << std::endl;
+    std::cout << "Process started - psuWorker" << std::endl;
 }
 
 // YES IT IS CORRECT (famous last words...)

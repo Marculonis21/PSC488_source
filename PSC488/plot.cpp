@@ -75,12 +75,12 @@ void Plot::redraw() {
 
 void Plot::fixRanges(float lower, QCPAxis *axis) {
     if (lower < 0) {
-        axis->moveRange(-lower);
+        axis->moveRange(-lower+0.0001);
     }
 }
 
 void Plot::rangeX(QCPRange newRange) {
-    fixRanges(newRange.lower + 0.01, this->plot->xAxis);
+    fixRanges(newRange.lower, this->plot->xAxis);
 
     if (customLimitLine != nullptr) {
         customLimitLine->end->setCoords(newRange.upper+1, customLimitLine->end->coords().y());
@@ -91,5 +91,5 @@ void Plot::rangeX(QCPRange newRange) {
 }
 
 void Plot::rangeY(QCPRange newRange) {
-    fixRanges(newRange.lower + 0.01, this->plot->yAxis);
+    fixRanges(newRange.lower, this->plot->yAxis);
 }

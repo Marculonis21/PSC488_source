@@ -17,7 +17,7 @@ struct FencedValue {
     FencedValue &operator=(const FencedValue &other) {
         this->value = other.value;
         return *this;
-    };
+    }
 
     bool operator<(const FencedValue &other) const { return value < other.value; }
     bool operator==(const FencedValue &other) const { return value == other.value; }

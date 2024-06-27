@@ -49,7 +49,14 @@ bool Psu::powerSwitch() {
     // Example: SO:FU:RSD 1 - Will enable RSD, hence output will be disabled.
     // Example: SO:FU:RSD 0 - Will disable RSD, hence output will be enabled.
 
-    set("SO:FU:RSD", std::to_string(this->power));
+    while (true) {
+        QString response = set("SO:FU:RSD", std::to_string(this->power));
+        if (!response.endsWith("ER01")) {
+            break;
+        }
+        QThread::msleep(10);
+    }
+
     power = !power;
     return power;
 }
@@ -110,6 +117,28 @@ void Psu::setMeCurrent(Current current) {
 }
 
 Current Psu::measurePSUCurrent() {
+    while(true) {
+        try {
+            return _measurePSUCurrent();
+        }
+        catch (CommException e) {
+            std::cout << "Failed conversion - trying again" << std::endl;
+        }
+    }
+}
+
+Voltage Psu::measurePSUVoltage() {
+    while(true) {
+        try {
+            return _measurePSUVoltage();
+        }
+        catch (CommException e) {
+            std::cout << "Failed conversion - trying again" << std::endl;
+        }
+    }
+}
+
+Current Psu::_measurePSUCurrent() {
     bool ok = false;
     auto response = query("ME:CU");
 
@@ -122,7 +151,7 @@ Current Psu::measurePSUCurrent() {
     throw CommException("Current measurement conversion failed - output " + response.toStdString());
 }
 
-Voltage Psu::measurePSUVoltage() {
+Voltage Psu::_measurePSUVoltage() {
     bool ok = false;
     auto response = query("ME:VO");
 
@@ -139,12 +168,12 @@ QString Psu::query(const std::string &query) {
     return SerialComm::send(this, this->port, query + "?", true);
 }
 
-void Psu::set(const std::string &command, const std::string &arg) {
+QString Psu::set(const std::string &command, const std::string &arg) {
     auto _command = command;
     if (arg != "")
         _command += " " + arg;
 
-    SerialComm::send(this, this->port, _command, false);
+    return SerialComm::send(this, this->port, _command, true);
 }
 
 void Psu::checkHealth() {

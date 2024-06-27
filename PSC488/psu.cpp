@@ -42,6 +42,11 @@ void Psu::connect(const QString &com) {
 }
 
 bool Psu::powerSwitch() {
+    // YES IT IS CORRECT (famous last words...)
+    //
+    // RSD OFF - disables RSD -> enables output
+    // RSD ON  - enables RSD  -> disables output
+    //
     // Example: SO:FU:RSD 1 - Will enable RSD, hence output will be disabled.
     // Example: SO:FU:RSD 0 - Will disable RSD, hence output will be enabled.
 
@@ -65,7 +70,7 @@ void Psu::setCurrent(const Current current) {
 
     this->psuCurrent = current;
     // because of std::string() operator we don't need to cast to string
-    set("SO:CU", current); //
+    set("SO:CU", current); 
 }
 
 void Psu::setVoltage(const Voltage voltage) {

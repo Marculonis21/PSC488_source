@@ -165,10 +165,6 @@ void MainWindow::on_setButton_clicked() {
     std::cout << "Process started - psuWorker" << std::endl;
 }
 
-// YES IT IS CORRECT (famous last words...)
-//
-// RSD OFF - disables RSD -> enables output
-// RSD ON  - enables RSD  -> disables output
 void MainWindow::on_outputOnButton_clicked() {
     psu->powerSwitch();
     ui->outputOnButton->setEnabled(false);

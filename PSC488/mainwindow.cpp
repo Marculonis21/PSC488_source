@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->monitorAmps->display(178.2);
     ui->monitorVolts->display(178.11);
+    ui->monitorCurrChange->display(-1);
 
     ui->baudCombo->setCurrentIndex(2);
     ui->baudCombo->setEnabled(false);
@@ -115,8 +116,11 @@ void MainWindow::on_currentEdit_textChanged(const QString &text) {
     QStandardItemModel *comboModel = qobject_cast<QStandardItemModel *>(ui->voltageCombo->model());
     comboModel->item(0)->setEnabled(true);
     comboModel->item(1)->setEnabled(value <= topLimit);
-    comboModel->item(2)->setEnabled(value <= midLimit);
-    comboModel->item(3)->setEnabled(value <= lowLimit);
+    comboModel->item(2)->setEnabled(value <= topLimit);
+    comboModel->item(3)->setEnabled(value <= topLimit);
+    comboModel->item(4)->setEnabled(value <= topLimit);
+    comboModel->item(5)->setEnabled(value <= midLimit);
+    comboModel->item(6)->setEnabled(value <= lowLimit);
 
     if (!comboModel->item(index)->isEnabled()) {
         while (!comboModel->item(index)->isEnabled()) {
@@ -157,7 +161,7 @@ void MainWindow::on_setButton_clicked() {
         return;
     }
 
-    psuWorker = std::make_unique<PsuWorker>(psu.get(), plot.get(), ui->monitorAmps, ui->monitorVolts);
+    psuWorker = std::make_unique<PsuWorker>(psu.get(), plot.get(), ui->monitorAmps, ui->monitorVolts, ui->monitorCurrChange);
     psuWorker->setTargets(voltage, current);
     psuWorker->run();
 

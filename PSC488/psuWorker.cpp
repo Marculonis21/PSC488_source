@@ -1,13 +1,14 @@
 #include "psuWorker.hpp"
 #include <qtimer.h>
 
-PsuWorker::PsuWorker(Psu *psu, Plot *plot, QLCDNumber *currLCD, QLCDNumber *voltLCD) {
+PsuWorker::PsuWorker(Psu *psu, Plot *plot, QLCDNumber *currLCD, QLCDNumber *voltLCD, QLCDNumber *currDiffLCD) {
     this->psu = psu;
     this->plot = plot;
     this->plot->clear();
 
     this->currLCD = currLCD;
     this->voltLCD = voltLCD;
+    this->currDiffLCD = currDiffLCD;
 
     this->zero = Voltage(0);
     
@@ -29,6 +30,7 @@ void PsuWorker::runMeasurement() {
         psu->setVoltage(zero);
         return;
     }
+    lastMeasCU = measCU;
 
     measVO = psu->measurePSUVoltage();
     measCU = psu->measurePSUCurrent();
@@ -44,10 +46,11 @@ void PsuWorker::runMeasurement() {
 }
 
 void PsuWorker::runDataCollection() {
-    currLCD->display(std::string(measCU).c_str());
-    voltLCD->display(std::string(measVO).c_str());
+    currLCD->display(std::string(measCU*currentMultiplier).c_str());
+    voltLCD->display(std::string(measVO*voltageMultiplier).c_str());
+    currDiffLCD->display(std::string((measCU-lastMeasCU)*currentMultiplier).c_str());
 
-    plot->appendData({(double)plotEntryID}, {std::stod(std::string(measCU))});
+    plot->appendData({(double)plotEntryID}, {std::stod(std::string(measCU*currentMultiplier))});
     plotEntryID++;
     emit plotRedraw();
 

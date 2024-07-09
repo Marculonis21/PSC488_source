@@ -10,7 +10,7 @@ class PsuWorker : public QObject {
   Q_OBJECT;
 
   public:
-    PsuWorker(Psu *psu, Plot *plot, QLCDNumber *currLCD, QLCDNumber *voltLCD);
+    PsuWorker(Psu *psu, Plot *plot, QLCDNumber *currLCD, QLCDNumber *voltLCD, QLCDNumber *currDiffLCD);
 
     void run();
     void stop();
@@ -22,6 +22,7 @@ class PsuWorker : public QObject {
 
     QLCDNumber *currLCD;
     QLCDNumber *voltLCD;
+    QLCDNumber *currDiffLCD;
 
     Voltage zero;
     Voltage targetVoltage;
@@ -32,6 +33,7 @@ class PsuWorker : public QObject {
     int plotEntryID = 0;
     Voltage measVO;
     Current measCU;
+    Current lastMeasCU;
     
   public slots:
     void runMeasurement();

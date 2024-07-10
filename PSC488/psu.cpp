@@ -13,6 +13,11 @@ Psu::Psu(QTextBrowser *textBrowser) {
 Psu::~Psu() { delete port; }
 
 void Psu::connect(const QString &com) {
+    if (port->isOpen()) {
+        textBrowser->insertPlainText(QString("Port is already open"));
+        return;
+    }
+
     port->setPortName(com);
     port->setBaudRate(QSerialPort::Baud9600);
     port->setDataBits(QSerialPort::Data8);
@@ -72,14 +77,15 @@ void Psu::remoteSwitch() {
 }
 
 void Psu::setCurrent(const Current current) {
-    std::cout << "steting current" << std::endl;
+    std::cout << "setting current" << std::endl;
 
     this->psuCurrent = current;
-    set("SO:CU", current); // because of std::string() operator we don't need to cast to string
+    set("SO:CU", current); // because of std::string() operator in fenced types
+                           // we don't need to cast to string
 }
 
 void Psu::setVoltage(const Voltage voltage) {
-    std::cout << "steting voltage" << std::endl;
+    std::cout << "setting voltage" << std::endl;
 
     this->psuVoltage = voltage;
     set("SO:VO", voltage);

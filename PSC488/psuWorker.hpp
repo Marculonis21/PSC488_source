@@ -34,6 +34,9 @@ class PsuWorker : public QObject {
     Voltage measVO;
     Current measCU;
     Current lastMeasCU;
+
+    const double voltageMultiplier = 1/1.9;
+    const double currentMultiplier = 1/5.3;
     
   public slots:
     void runMeasurement();

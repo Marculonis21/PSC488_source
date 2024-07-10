@@ -60,7 +60,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->outputOnButton->setEnabled(false);
     ui->outputOffButton->setEnabled(false);
-    ui->setButton->setEnabled(true);
+    ui->setButton->setEnabled(false);
+
+    ui->psu_conn_connect->setEnabled(true);
+    ui->psu_conn_checkHealth->setEnabled(false);
+    ui->psu_conn_help->setEnabled(false);
+    ui->psu_psu_funcOutputQ->setEnabled(false);
+    ui->psu_psu_funcOutputSwitch->setEnabled(false);
+    ui->psu_meas_sourceVolt->setEnabled(false);
+    ui->psu_meas_sourceCurr->setEnabled(false);
+    ui->psu_meas_measureVolt->setEnabled(false);
+    ui->psu_meas_measureCurr->setEnabled(false);
+    ui->psu_meas_maxVolt->setEnabled(false);
+    ui->psu_meas_maxCurr->setEnabled(false);
+    ui->psu_conn_remoteQ->setEnabled(false);
+    ui->psu_conn_localQ->setEnabled(false);
+    ui->psu_conn_remoteLocalSwitch->setEnabled(false);
 }
 
 MainWindow::~MainWindow() {}
@@ -186,8 +201,23 @@ void MainWindow::on_psu_conn_connect_clicked() {
     if (psu->isConnected()) {
         ui->outputOnButton->setEnabled(!psu->isTurnedOn());
         ui->outputOffButton->setEnabled(psu->isTurnedOn());
-        ui->setButton->setEnabled(psu->isConnected());
     }
+
+    ui->setButton->setEnabled(psu->isConnected());
+    ui->psu_conn_checkHealth->setEnabled(psu->isConnected());
+    ui->psu_conn_help->setEnabled(psu->isConnected());
+    ui->psu_psu_funcOutputQ->setEnabled(psu->isConnected());
+    ui->psu_psu_funcOutputSwitch->setEnabled(psu->isConnected());
+    ui->psu_meas_sourceVolt->setEnabled(psu->isConnected());
+    ui->psu_meas_sourceCurr->setEnabled(psu->isConnected());
+    ui->psu_meas_measureVolt->setEnabled(psu->isConnected());
+    ui->psu_meas_measureCurr->setEnabled(psu->isConnected());
+    ui->psu_meas_maxVolt->setEnabled(psu->isConnected());
+    ui->psu_meas_maxCurr->setEnabled(psu->isConnected());
+
+    /* ui->psu_conn_remoteQ->setEnabled(psu->isConnected()); */
+    /* ui->psu_conn_localQ->setEnabled(psu->isConnected()); */
+    /* ui->psu_conn_remoteLocalSwitch->setEnabled(psu->isConnected()); */
 }
 
 void MainWindow::on_psu_conn_checkHealth_clicked() { psu->checkHealth(); }

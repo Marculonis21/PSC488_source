@@ -58,8 +58,6 @@ void PsuWorker::runDataCollection() {
 }
 
 // Values offsetting measured instrumental difference
-const double voltageMultiplier = 1/1.9;
-const double currentMultiplier = 1/5.3;
 void PsuWorker::setTargets(Voltage tVoltage, Current tCurrent) {
     std::cout << "worker Targets set" << std::endl;
     this->targetVoltage = tVoltage*voltageMultiplier;

@@ -71,11 +71,6 @@ class Psu : public QObject {
 
   private slots:
     void serialReadyRead();
-
-  public slots:
-    void measureMe();
-    void setMeVoltage(Voltage voltage);
-    void setMeCurrent(Current current);
 };
 
 #endif

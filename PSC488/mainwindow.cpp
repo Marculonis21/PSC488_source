@@ -1,8 +1,10 @@
 #include "mainwindow.hpp"
+#include "fencedType.hpp"
 #include "plot.hpp"
 #include "threadWorker.hpp"
 #include "ui_mainwindow.h"
 #include <QSerialPortInfo>
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 #include <memory>
@@ -14,11 +16,27 @@
 #include <qvalidator.h>
 #include <string>
 #include <utility>
+#include <vector>
 #include "psu.hpp"
 
-const double topLimit = 172.8;
-const double midLimit = 172.0;
-const double lowLimit = 170.0;
+const Current topLimit(172.45); // TO BE CHECKED WITH MICHAL
+const Current midLimit(172.0);
+const Current lowLimit(170.0);
+
+const Voltage topVLimit(0.1);
+const Voltage midVLimit(1.5);
+const Voltage lowVLimit(2.0);
+
+// ADD VOLTAGE values HERE to be displayed in the selection combo box 
+std::vector<float> voltageComboItems{
+    0.1,
+    0.5,
+    0.7,
+    0.8,
+    1.5,
+    2.0
+};
+
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -31,9 +49,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->baudCombo->setCurrentIndex(2);
     ui->baudCombo->setEnabled(false);
 
+    std::sort(voltageComboItems.begin(), voltageComboItems.end());
+
+    ui->voltageCombo->clear();
+    ui->voltageCombo->addItem(QString::number(0.0, 'f', 1) + " V");
+
+    for (auto && item : voltageComboItems) {
+        ui->voltageCombo->addItem(QString::number(item, 'f', 1) + " V");
+    }
+
     QDoubleValidator *currentValidator = new QDoubleValidator(ui->currentEdit);
     currentValidator->setBottom(0);
-    currentValidator->setTop(topLimit);
+
+    currentValidator->setTop(std::stod(std::string(topLimit)));
     currentValidator->setNotation(QDoubleValidator::StandardNotation);
     ui->currentEdit->setValidator(currentValidator);
 
@@ -114,28 +142,42 @@ void MainWindow::on_drawTestButton_clicked() {
 void MainWindow::on_currentEdit_textChanged(const QString &text) {
     std::cout << "current edit change: " << text.toStdString() << std::endl;
 
-    double value = text.toDouble();
+    Current currentValue(text.toDouble());
 
     // because I don't understand when does validator event happen (this is safer)
-    if (value < 0) {
-        value = 0;
+    if (currentValue < Current(0.0)) {
+        currentValue = Current(0);
         ui->currentEdit->setText(QString::number(0));
     }
-    if (value > topLimit) {
-        value = topLimit;
-        ui->currentEdit->setText(QString::number(topLimit));
+    if (topLimit < currentValue ) {
+        currentValue = topLimit;
+        ui->currentEdit->setText(QString(std::string(topLimit).c_str()));
     }
 
     int index = ui->voltageCombo->currentIndex();
 
+    /* std::cout << currentValue << std::endl; */
     QStandardItemModel *comboModel = qobject_cast<QStandardItemModel *>(ui->voltageCombo->model());
-    comboModel->item(0)->setEnabled(true);
-    comboModel->item(1)->setEnabled(value <= topLimit);
-    comboModel->item(2)->setEnabled(value <= topLimit);
-    comboModel->item(3)->setEnabled(value <= topLimit);
-    comboModel->item(4)->setEnabled(value <= topLimit);
-    comboModel->item(5)->setEnabled(value <= midLimit);
-    comboModel->item(6)->setEnabled(value <= lowLimit);
+    for (size_t i = 0; i < ui->voltageCombo->count(); i++) {
+        Voltage vcValue(ui->voltageCombo->itemText(i).remove("V").toDouble());
+        /* std::cout << vcValue << std::endl; */
+
+        if (currentValue <= lowLimit) {
+            comboModel->item(i)->setEnabled(true);
+        }
+        else if (currentValue <= midLimit) {
+            comboModel->item(i)->setEnabled(vcValue <= midVLimit);
+        }
+        else if (currentValue <= topLimit) {
+            comboModel->item(i)->setEnabled(vcValue <= topVLimit);
+        }
+    }
+    /* comboModel->item(1)->setEnabled(value <= topLimit); */
+    /* comboModel->item(2)->setEnabled(value <= midLimit); */
+    /* comboModel->item(3)->setEnabled(value <= midLimit); */
+    /* comboModel->item(4)->setEnabled(value <= midLimit); */
+    /* comboModel->item(5)->setEnabled(value <= midLimit); */
+    /* comboModel->item(6)->setEnabled(value <= lowLimit); */
 
     if (!comboModel->item(index)->isEnabled()) {
         while (!comboModel->item(index)->isEnabled()) {

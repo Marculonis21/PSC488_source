@@ -78,17 +78,31 @@ void Psu::remoteSwitch() {
 
 void Psu::setCurrent(const Current current) {
     std::cout << "setting current" << std::endl;
-
+    
     this->psuCurrent = current;
-    set("SO:CU", current); // because of std::string() operator in fenced types
-                           // we don't need to cast to string
+    // make sure that the value is set properly
+    while(true) {
+        QString response = set("SO:CU", current); // because of std::string() operator in fenced types
+                                                  // we don't need to cast to string
+        if (!response.endsWith("ER01")) {
+            break;
+        }
+        QThread::msleep(10);
+    }
 }
 
 void Psu::setVoltage(const Voltage voltage) {
     std::cout << "setting voltage" << std::endl;
 
     this->psuVoltage = voltage;
-    set("SO:VO", voltage);
+    while(true) {
+        QString response = set("SO:VO", voltage); 
+                                                  
+        if (!response.endsWith("ER01")) {
+            break;
+        }
+        QThread::msleep(10);
+    }
 }
 
 Current Psu::getPsuCurrentSettings() {
@@ -96,30 +110,6 @@ Current Psu::getPsuCurrentSettings() {
 }
 Voltage Psu::getPsuVoltageSettings() {
     return this->psuVoltage;
-}
-
-void Psu::measureMe() {
-    try{
-        measurePSUCurrent();
-    }
-    catch (CommException e) {
-        std::cout << "caught" << std::endl;
-    }
-    try{
-        measurePSUVoltage();
-    }
-    catch (CommException e) {
-        std::cout << "caught" << std::endl;
-    }
-}
-
-void Psu::setMeVoltage(Voltage voltage) {
-    setVoltage(voltage);
-    std::cout << "mVolt" << std::endl;
-}
-void Psu::setMeCurrent(Current current) {
-    setCurrent(current);
-    std::cout << "mCurr" << std::endl;
 }
 
 Current Psu::measurePSUCurrent() {

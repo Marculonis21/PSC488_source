@@ -11,7 +11,7 @@ LiveMeasurementThread::LiveMeasurementThread(Plot *plot, Psu *psu,
     running = true;
 
     connect(this, &LiveMeasurementThread::plotRedraw, plot, &Plot::redraw);
-    connect(this, &LiveMeasurementThread::measure, psu, &Psu::measureMe);
+    /* connect(this, &LiveMeasurementThread::measure, psu, &Psu::measureMe); */
 }
 
 void LiveMeasurementThread::run() {
@@ -46,8 +46,8 @@ void LiveMeasurementThread::stopMeasurement() {
 PsuPowerThread::PsuPowerThread(Psu *psu, Voltage targetVoltage, Current targetCurrent) {
     this->psu = psu;
 
-    connect(this, &PsuPowerThread::setVoltage, psu, &Psu::setMeVoltage);
-    connect(this, &PsuPowerThread::setCurrent, psu, &Psu::setMeCurrent);
+    /* connect(this, &PsuPowerThread::setVoltage, psu, &Psu::setMeVoltage); */
+    /* connect(this, &PsuPowerThread::setCurrent, psu, &Psu::setMeCurrent); */
 
     this->targetVoltage = targetVoltage;
     this->targetCurrent = targetCurrent;

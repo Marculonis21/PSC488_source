@@ -3,11 +3,23 @@
 
 #include <sstream>
 
+/*
+ * PLEASE PLEASE PRETTY PLEASE,
+ * This struct is created in very specific way so that there cannot be a
+ * confusion between values which should be understood as Voltage or as Current.
+ * There is a reason why it is very hard (but still possible) to extract the
+ * value itself! You should have a very specific reason for getting out the
+ * value (UI update, printing out, etc) - these reasons should be covered by the
+ * std::string operator implemented below. PLEASE, don't CHANGE this struct to
+ * allow for direct value extraction.
+ *
+ * Thank you, Marek B.
+ */
+
 enum class FencedType { VOLTAGE, CURRENT, };
 
 template <FencedType X> 
 struct FencedValue {
-
     FencedValue() : value(0) {}
     explicit FencedValue(double value) : value(value) {}
 
@@ -20,6 +32,7 @@ struct FencedValue {
     }
 
     bool operator<(const FencedValue &other) const { return value < other.value; }
+    bool operator<=(const FencedValue &other) const { return value <= other.value; }
     bool operator==(const FencedValue &other) const { return value == other.value; }
     bool operator!=(const FencedValue &other) const { return value != other.value; }
 

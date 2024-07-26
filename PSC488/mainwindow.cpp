@@ -42,9 +42,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(0);
 
-    ui->monitorAmps->display(178.2);
-    ui->monitorVolts->display(178.11);
-    ui->monitorCurrChange->display(-1);
+    ui->monitorAmps->display(172.1);
+    ui->monitorVolts->display(0.1);
+    ui->monitorCurrChange->display(0);
 
     ui->baudCombo->setCurrentIndex(2);
     ui->baudCombo->setEnabled(false);
@@ -156,11 +156,9 @@ void MainWindow::on_currentEdit_textChanged(const QString &text) {
 
     int index = ui->voltageCombo->currentIndex();
 
-    /* std::cout << currentValue << std::endl; */
     QStandardItemModel *comboModel = qobject_cast<QStandardItemModel *>(ui->voltageCombo->model());
     for (size_t i = 0; i < ui->voltageCombo->count(); i++) {
         Voltage vcValue(ui->voltageCombo->itemText(i).remove("V").toDouble());
-        /* std::cout << vcValue << std::endl; */
 
         if (currentValue <= lowLimit) {
             comboModel->item(i)->setEnabled(true);
@@ -172,12 +170,6 @@ void MainWindow::on_currentEdit_textChanged(const QString &text) {
             comboModel->item(i)->setEnabled(vcValue <= topVLimit);
         }
     }
-    /* comboModel->item(1)->setEnabled(value <= topLimit); */
-    /* comboModel->item(2)->setEnabled(value <= midLimit); */
-    /* comboModel->item(3)->setEnabled(value <= midLimit); */
-    /* comboModel->item(4)->setEnabled(value <= midLimit); */
-    /* comboModel->item(5)->setEnabled(value <= midLimit); */
-    /* comboModel->item(6)->setEnabled(value <= lowLimit); */
 
     if (!comboModel->item(index)->isEnabled()) {
         while (!comboModel->item(index)->isEnabled()) {
@@ -213,8 +205,6 @@ void MainWindow::on_setButton_clicked() {
 
     if (psuWorker) {
         psuWorker->setTargets(voltage, current);
-        // psuWorker->stop();
-        // psuWorker.reset();
         return;
     }
 

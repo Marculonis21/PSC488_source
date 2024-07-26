@@ -35,9 +35,6 @@ void PsuWorker::runMeasurement() {
     measVO = psu->measurePSUVoltage();
     measCU = psu->measurePSUCurrent();
 
-    // if (targetCurrent - 0.001 < measCU && psu->getPsuVoltageSettings() != zero) {
-    //     psu->setVoltage(zero);
-    // }
     if (psu->getPsuVoltageSettings() != targetVoltage){
         psu->setVoltage(targetVoltage);
     }

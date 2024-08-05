@@ -35,6 +35,7 @@ class PsuWorker : public QObject {
     Current measCU;
     Current lastMeasCU;
 
+    // constants used instead of having a properly calibrated psu controller - analog input/output to the psu was off
     const double voltageMultiplier = 1/1.9;
     const double currentMultiplier = 1/5.3;
     

@@ -13,7 +13,7 @@
  * std::string operator implemented below. PLEASE, don't CHANGE this struct to
  * allow for direct value extraction.
  *
- * Thank you, Marek B.
+ * Thank you, Marek Becvar
  */
 
 enum class FencedType { VOLTAGE, CURRENT, };
@@ -45,7 +45,7 @@ struct FencedValue {
     // conversion operator
     operator std::string() const { 
       std::ostringstream out;
-      out.precision(3);
+      out.precision(2);
       out << std::fixed << value;
       return out.str();
     }

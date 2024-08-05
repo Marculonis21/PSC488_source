@@ -204,6 +204,10 @@ void MainWindow::on_outputOffButton_clicked() {
     ui->outputOffButton->setEnabled(false);
 }
 
+void MainWindow::on_plotSaveButton_clicked() {
+    std::cout << "HEY DONE" << std::endl;
+}
+
 // PSU CONNECTION
 void MainWindow::on_psu_conn_connect_clicked() {
     psu->connect(ui->portCombo->currentText());

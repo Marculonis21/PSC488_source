@@ -41,6 +41,7 @@ private slots:
     void on_setButton_clicked();
     void on_outputOffButton_clicked();
     void on_outputOnButton_clicked();
+    void on_plotSaveButton_clicked();
 
     void on_psu_conn_connect_clicked();
     void on_psu_conn_checkHealth_clicked();

@@ -24,6 +24,7 @@ public:
     void setLimit(const Current limit);
     void drawTest();
     void clear();
+    bool save();
 
 private:
     QVector<double> xData;

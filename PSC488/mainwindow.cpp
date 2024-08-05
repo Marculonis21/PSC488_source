@@ -205,7 +205,17 @@ void MainWindow::on_outputOffButton_clicked() {
 }
 
 void MainWindow::on_plotSaveButton_clicked() {
-    std::cout << "HEY DONE" << std::endl;
+    std::cout << "PLOT save button - clicked" << std::endl;
+    auto res = plot->save();
+    if (res) {
+        QMessageBox::information(this, "Plot saving",
+                  "Plot data successfully saved. \nAvailable in directory: "+
+                  QDir::currentPath());
+    }
+    else {
+        QMessageBox::warning(this, "Plot saving",
+                                   "Did not manage to save the plot data!");
+    }
 }
 
 // PSU CONNECTION

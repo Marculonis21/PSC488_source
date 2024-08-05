@@ -2,8 +2,10 @@
 #include "qcustomplot.h"
 #include <cmath>
 #include <iostream>
+#include <qglobal.h>
 #include <qnamespace.h>
 #include <qvector.h>
+#include <qdatetime.h>
 
 Plot::Plot(QCustomPlot *plot) {
     float scaleBase = 1.1;
@@ -65,6 +67,26 @@ void Plot::clear() {
     this->dataGraph->data()->clear();
 
     redraw();
+}
+
+bool Plot::save() {
+    QDateTime dateTime = QDateTime::currentDateTime();
+    QString timeStamp = dateTime.toString("yyyy-MM-dd_HH-mm-ss");
+
+    QString filename = "plotData_"+timeStamp+".csv";
+    std::cout << "Filename: " << filename.toStdString() << std::endl;
+
+    QFile file(filename);
+    if (file.open(QIODevice::ReadWrite)) {
+        QTextStream stream(&file);
+
+        stream << "x_data" << "," << "y_data" << endl;
+        for (int i = 0; i < this->xData.size(); ++i) {
+            stream << xData[i] << "," << yData[i] << endl;
+        }
+        return true;
+    }
+    return false;
 }
 
 void Plot::redraw() {

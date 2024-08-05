@@ -9,7 +9,6 @@
 #include "plot.hpp"
 #include "psu.hpp"
 #include "psuWorker.hpp"
-#include "threadWorker.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,8 +28,6 @@ private:
     std::unique_ptr<Ui::MainWindow> ui;
     std::unique_ptr<Psu> psu;
     std::unique_ptr<Plot> plot;
-    std::unique_ptr<LiveMeasurementThread> liveMeasThread; 
-    std::unique_ptr<PsuPowerThread> psuPowerThread; 
 
     std::unique_ptr<PsuWorker> psuWorker;
 
@@ -60,11 +57,7 @@ private slots:
     void on_psu_psu_funcOutputQ_clicked();
     void on_psu_psu_funcOutputSwitch_clicked();
     void on_refreshButton_clicked();
-    void on_drawTestButton_clicked();
     void on_customCommandSendButton_clicked();
-
-    void liveMeasThreadDone();
-    void psuPowerThreadDone();
 };
 
 #endif // MAINWINDOW_H

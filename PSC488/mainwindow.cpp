@@ -1,7 +1,6 @@
 #include "mainwindow.hpp"
 #include "fencedType.hpp"
 #include "plot.hpp"
-#include "threadWorker.hpp"
 #include "ui_mainwindow.h"
 #include <QSerialPortInfo>
 #include <algorithm>
@@ -117,27 +116,6 @@ void MainWindow::refreshPorts() {
 }
 
 void MainWindow::on_refreshButton_clicked() { refreshPorts(); }
-
-void MainWindow::liveMeasThreadDone() {
-    liveMeasThread.reset();
-}
-
-void MainWindow::psuPowerThreadDone() {
-    psuPowerThread.reset();
-}
-
-void MainWindow::on_drawTestButton_clicked() {
-
-    if (liveMeasThread) {
-        liveMeasThread->stopMeasurement();
-        return;
-    }
-
-    liveMeasThread = std::make_unique<LiveMeasurementThread>(this->plot.get(), this->psu.get(), ui->monitorAmps, ui->monitorVolts);
-    connect(liveMeasThread.get(), &LiveMeasurementThread::endSignal, this, &MainWindow::liveMeasThreadDone);
-
-    liveMeasThread->start();
-}
 
 void MainWindow::on_currentEdit_textChanged(const QString &text) {
     std::cout << "current edit change: " << text.toStdString() << std::endl;
